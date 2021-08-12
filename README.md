@@ -5,6 +5,14 @@
   * [Java](#java)
   * [Python](#python)
 
+## Target audience
+
+People who use apache beam.
+
+## Motivation
+
+I would like to help people with pipeline implementation.
+
 ## Directory model
 ```
 .
