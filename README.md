@@ -11,7 +11,7 @@ People who use apache beam.
 
 ## Motivation
 
-I would like to help people with pipeline implementation.
+Not just for personal studying, but also would like to help people with pipeline implementation.
 
 ## Directory model
 ```
