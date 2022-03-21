@@ -6,6 +6,7 @@ import org.bson.Document;
 import java.util.HashMap;
 import java.util.Map;
 
+// https://beam.apache.org/documentation/programming-guide/#annotating-custom-type-default-coder
 @DefaultCoder(AvroCoder.class)
 public class SimpleEntity {
     public String sentence ;
