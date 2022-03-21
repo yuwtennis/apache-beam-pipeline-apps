@@ -1,26 +1,35 @@
 package net.yuwtennis.app.repositories;
 
+import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.mongodb.MongoDbIO;
 import org.apache.beam.sdk.values.PCollection;
+import org.bson.Document;
 
 public class MongoIO {
 
-    public static PCollection Write(PCollection pcol, String uri, String database, String collection) {
-        pcol.apply(
+    public static void Write(
+            PCollection<Document> docs,
+            String uri,
+            String database,
+            String collection) {
+        docs.apply(
                 MongoDbIO.write()
                         .withUri((uri))
                         .withDatabase(database)
                         .withCollection(collection));
-        return pcol ;
     }
 
-    public static PCollection Read(PCollection pcol, String uri, String database, String collection) {
-        pcol.apply(
+    public static PCollection<Document> Read(
+            Pipeline p,
+            String uri,
+            String database,
+            String collection) {
+        PCollection<Document> docs = p.apply(
                 MongoDbIO.read()
                         .withUri((uri))
                         .withDatabase(database)
                         .withCollection(collection));
 
-        return pcol;
+        return docs;
     }
 }
