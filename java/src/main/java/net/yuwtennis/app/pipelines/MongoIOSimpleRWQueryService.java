@@ -1,17 +1,16 @@
 package net.yuwtennis.app.pipelines;
 
+import net.yuwtennis.app.entities.SimpleEntity;
 import net.yuwtennis.app.helpers.fns.PrintFn;
 import net.yuwtennis.app.schemas.StaticSchema;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.coders.StringUtf8Coder;
 import org.apache.beam.sdk.transforms.Create;
 import org.apache.beam.sdk.transforms.MapElements;
-import org.apache.beam.sdk.transforms.SimpleFunction;
 import org.apache.beam.sdk.values.PCollection;
+import org.apache.beam.sdk.values.TypeDescriptor;
+import org.apache.beam.sdk.values.TypeDescriptors;
 import org.bson.Document;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static net.yuwtennis.app.repositories.MongoIO.Read;
 import static net.yuwtennis.app.repositories.MongoIO.Write;
@@ -33,33 +32,39 @@ public class MongoIOSimpleRWQueryService implements PipelineService {
         this.collection =  System.getenv("MONGO_COLLECTION") ;
     }
 
+    /***
+     *
+     * @param p Pipeline instance
+     */
     public void run(Pipeline p) {
 
-        PCollection<String> pcol = p.apply(
-                Create.of(StaticSchema.LINES)).setCoder(StringUtf8Coder.of());
+        PCollection<SimpleEntity> pcol = p.apply(
+                Create.of(StaticSchema.LINES)).setCoder(StringUtf8Coder.of()
+        ).apply(
+                MapElements
+                        .into(TypeDescriptor.of(SimpleEntity.class))
+                        .via(SimpleEntity::new)
+        );
 
         // From String to org.bson.Document
-        PCollection<Document> w_docs =  pcol.apply(MapElements.via(
-                new SimpleFunction<String, Document>() {
-                    public Document apply(String line) {
-                        Map<String, Object> map = new HashMap<String, Object>() ;
-                        map.put("sentence", line);
-
-                        return new Document(map) ;
-                    }
-                }
-        ));
+        PCollection<Document> w_docs =  pcol.apply(
+                MapElements
+                        .into(TypeDescriptor.of(Document.class))
+                        .via(SimpleEntity::toDocument));
 
         Write(w_docs, uri, database, collection);
 
         // From org.bson.Document to String
         PCollection<Document> r_docs = Read(p, uri, database, collection);
 
-        r_docs.apply(MapElements.via(
-                new SimpleFunction<Document, String>() {
-                    public String apply(Document doc) {
-                      return (String)doc.get("sentence") ;
-                    }
-        })).apply(MapElements.via(new PrintFn()));
+        r_docs.apply(
+                MapElements
+                        .into(TypeDescriptor.of(SimpleEntity.class))
+                        .via(SimpleEntity::fromDocument)
+        ).apply(
+                MapElements
+                        .into(TypeDescriptors.strings())
+                        .via((SimpleEntity entity) -> entity.sentence)
+        ).apply(MapElements.via(new PrintFn()));
     }
 }

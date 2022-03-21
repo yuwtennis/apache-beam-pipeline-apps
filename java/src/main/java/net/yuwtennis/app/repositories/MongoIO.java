@@ -7,6 +7,13 @@ import org.bson.Document;
 
 public class MongoIO {
 
+    /***
+     *
+     * @param docs Mongo documents
+     * @param uri Mongo connection uri
+     * @param database Mongo database name
+     * @param collection Mongo collection name
+     */
     public static void Write(
             PCollection<Document> docs,
             String uri,
@@ -19,17 +26,24 @@ public class MongoIO {
                         .withCollection(collection));
     }
 
+    /***
+     *
+     * @param p Pipeline instance
+     * @param uri Mongo uri
+     * @param database Mongo database name
+     * @param collection Mongo collection name
+     * @return A mongo document
+     */
     public static PCollection<Document> Read(
             Pipeline p,
             String uri,
             String database,
             String collection) {
-        PCollection<Document> docs = p.apply(
+
+        return p.apply(
                 MongoDbIO.read()
                         .withUri((uri))
                         .withDatabase(database)
                         .withCollection(collection));
-
-        return docs;
     }
 }
