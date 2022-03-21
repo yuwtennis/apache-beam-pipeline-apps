@@ -8,8 +8,8 @@ import org.apache.beam.sdk.transforms.Create;
 import org.apache.beam.sdk.transforms.MapElements;
 import org.apache.beam.sdk.values.PCollection;
 
-import static net.yuwtennis.app.helpers.ios.MongoIO.Read;
-import static net.yuwtennis.app.helpers.ios.MongoIO.Write;
+import static net.yuwtennis.app.repositories.MongoIO.Read;
+import static net.yuwtennis.app.repositories.MongoIO.Write;
 
 public class MongoIOSimpleRWQueryService implements PipelineService {
 
@@ -19,7 +19,11 @@ public class MongoIOSimpleRWQueryService implements PipelineService {
 
     public MongoIOSimpleRWQueryService() {
         // FIXME Default system env for now
-        this.uri = System.getenv("MONGO_URI") ;
+        this.uri = String.format("mongodb://%s:%s@%s",
+                System.getenv("MONGO_USER"),
+                System.getenv("MONGO_PASSWORD"),
+                System.getenv("MONGO_HOST"));
+
         this.database =  System.getenv("MONGO_DB") ;
         this.collection =  System.getenv("MONGO_COLLECTION") ;
     }
