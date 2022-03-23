@@ -11,6 +11,8 @@ import org.apache.beam.sdk.values.PCollection;
 import org.apache.beam.sdk.values.TypeDescriptor;
 import org.apache.beam.sdk.values.TypeDescriptors;
 import org.bson.Document;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import static net.yuwtennis.app.repositories.MongoIO.Read;
 import static net.yuwtennis.app.repositories.MongoIO.Write;
@@ -20,6 +22,8 @@ public class MongoIOSimpleRWQueryService implements PipelineService {
     public String uri ;
     public String database ;
     public String collection ;
+    final Logger logger = LogManager.getLogger(
+            MongoIOSimpleRWQueryService.class) ;
 
     public MongoIOSimpleRWQueryService() {
         // FIXME Default system env for now
@@ -30,6 +34,9 @@ public class MongoIOSimpleRWQueryService implements PipelineService {
 
         this.database =  System.getenv("MONGO_DB") ;
         this.collection =  System.getenv("MONGO_COLLECTION") ;
+
+        this.logger.info("uri: {} , db: {} , collection: {}",
+                this.uri , this.database, this.collection) ;
     }
 
     /***
@@ -37,6 +44,7 @@ public class MongoIOSimpleRWQueryService implements PipelineService {
      * @param p Pipeline instance
      */
     public void run(Pipeline p) {
+        this.logger.info("Running pipeline...") ;
 
         PCollection<SimpleEntity> pcol = p.apply(
                 Create.of(StaticSchema.LINES)).setCoder(StringUtf8Coder.of()
@@ -52,10 +60,18 @@ public class MongoIOSimpleRWQueryService implements PipelineService {
                         .into(TypeDescriptor.of(Document.class))
                         .via(SimpleEntity::toDocument));
 
-        Write(w_docs, uri, database, collection);
+        Write(
+                w_docs,
+                this.uri,
+                this.database,
+                this.collection);
 
         // From org.bson.Document to String
-        PCollection<Document> r_docs = Read(p, uri, database, collection);
+        PCollection<Document> r_docs = Read(
+                p,
+                this.uri,
+                this.database,
+                this.collection);
 
         r_docs.apply(
                 MapElements
@@ -66,5 +82,7 @@ public class MongoIOSimpleRWQueryService implements PipelineService {
                         .into(TypeDescriptors.strings())
                         .via((SimpleEntity entity) -> entity.sentence)
         ).apply(MapElements.via(new PrintFn()));
+
+        p.run().waitUntilFinish() ;
     }
 }
