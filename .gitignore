@@ -3,4 +3,4 @@
 /java/java.iml
 /python/python.iml
 /java/target/
-/.envrc
+/envrc.sample

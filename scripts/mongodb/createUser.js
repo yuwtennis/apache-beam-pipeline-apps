@@ -3,6 +3,6 @@ db.createUser(
   {
     user: "YOURUSER",
     pwd:  passwordPrompt(),
-    roles: [ { role: "readWrite", db: "literature" }, {role: "clusterManager", db: "admin"}]
+    roles: [ { role: "readWrite", db: "YOURDB" }, {role: "clusterManager", db: "admin"}]
   }
 )

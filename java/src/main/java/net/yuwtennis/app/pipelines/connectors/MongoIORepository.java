@@ -1,13 +1,14 @@
-package net.yuwtennis.app.repositories;
+package net.yuwtennis.app.pipelines.connectors;
 
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.mongodb.MongoDbIO;
 import org.apache.beam.sdk.values.PCollection;
 import org.bson.Document;
 
-public class MongoIO {
+public class MongoIORepository {
 
     /***
+     * Store elements into MongoDb
      *
      * @param docs Mongo documents
      * @param uri Mongo connection uri
@@ -27,6 +28,7 @@ public class MongoIO {
     }
 
     /***
+     * Reconstitute elements from MongoDb
      *
      * @param p Pipeline instance
      * @param uri Mongo uri

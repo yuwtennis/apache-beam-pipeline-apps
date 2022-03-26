@@ -3,7 +3,7 @@ package net.yuwtennis.app.helpers.ios;
 import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
-public class MongoIOTest {
+public class MongoIORepositoryTest {
 
     @Test
     public void Write() {

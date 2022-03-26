@@ -1,6 +1,5 @@
 package net.yuwtennis.app;
 
-import net.yuwtennis.app.pipelines.MongoIOSimpleRWQueryService;
 import net.yuwtennis.app.pipelines.PipelineService;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.options.PipelineOptions;

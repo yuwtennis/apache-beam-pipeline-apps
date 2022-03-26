@@ -1,4 +1,4 @@
-package net.yuwtennis.app.schemas;
+package net.yuwtennis.app.pipelines.elements;
 
 import java.util.Arrays;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * A value object class.
  */
-public class StaticSchema {
+public class StaticElements {
 
     // https://beam.apache.org/documentation/programming-guide/#creating-pcollection-in-memory
     public static final List<String> LINES = Arrays.asList(

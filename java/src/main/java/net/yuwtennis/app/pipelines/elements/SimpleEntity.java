@@ -1,4 +1,4 @@
-package net.yuwtennis.app.entities;
+package net.yuwtennis.app.pipelines.elements;
 
 import org.apache.beam.sdk.coders.AvroCoder;
 import org.apache.beam.sdk.coders.DefaultCoder;
@@ -11,8 +11,10 @@ import java.util.Map;
 public class SimpleEntity {
     public String sentence ;
 
-    public SimpleEntity(String line) {
+    // no-argument constructor
+    public SimpleEntity() {}
 
+    public SimpleEntity(String line) {
         this.sentence = line ;
     }
 
@@ -23,7 +25,6 @@ public class SimpleEntity {
     public Document toDocument() {
 
         Map<String, Object> map = new HashMap<String, Object>() ;
-
         map.put("sentence", this.sentence);
 
         return new Document(map);
