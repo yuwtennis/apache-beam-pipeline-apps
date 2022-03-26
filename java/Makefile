@@ -1,4 +1,7 @@
 
+utest:
+	mvn test
+
 clean:
 	mvn clean
 
