@@ -1,10 +1,12 @@
 name: Java CI
 
-on: [push]
+on:
+  push:
+    branches-ignore:
+      - main
 
 jobs:
   unittest:
-    if: github.ref != 'refs/head/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
