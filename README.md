@@ -48,6 +48,7 @@ tbc
 
 * mvn (Tested on `3.8.4`)
 * java (Tested on `openjdk 11.0.15`)
+* mongodb if using `connector.MongoIORepository`. See `scripts/mongodb/createUser.js` for required roles.
 
 #### Available environment variables
 
