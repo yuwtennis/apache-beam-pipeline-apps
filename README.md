@@ -5,40 +5,81 @@
   * [Java](#java)
   * [Python](#python)
 
+## Target audience
+
+People who use apache beam.
+
+## Motivation
+
+Not just for personal studying, but also would like to help people with pipeline implementation.
+
 ## Directory model
 ```
 .
-├── java                                                  # Java code
-│   └── pipeline_apps                               # Maven Group Id
-│       ├── pom.xml
-│       └── src
-│           ├── main
-│           │   └── java
-│           │       └── net
-│           │           └── yuwtennis
-│           │               └── app
-│           │                   └── App.java
-│           └── test
-│               └── java
-│                   └── net
-│                       └── yuwtennis
-│                           └── app
-│                               └── AppTest.java
-├── python                                                # Python code
-│   ├── __main__.py
-│   ├── pipeline_apps                               # Package for python
-│   │   └── __init__.py
-│   └── requirements.txt
-└── README.md
+└── src
+    ├── main
+    │   └── java
+    │       └── net
+    │           └── yuwtennis
+    │               └── app
+    │                   ├── helpers
+    │                   │   └── fns
+    │                   └── pipelines
+    │                       ├── connectors
+    │                       └── elements
 ```
 
 ## Available apps
 
 ### Java
-| Application Name | Description | State |
+| Pipeline Name | Description | State |
 | ---------------- | ----------- | ----- |
-| FsToEs           | Send data from local filesystem to Elasticsearch | Doing |
+| MongoIOSimpleReadService | Simply read from mongodb | Done |
+| MongoIOSimpleWriteService | Simply read from mongodb | Done |
 
 ### Python
 
 tbc
+
+## Available actions
+
+### For java
+#### Pre-requisite
+
+* mvn (Tested on `3.8.4`)
+* java (Tested on `openjdk 11.0.15`)
+
+#### Available environment variables
+
+| Name | Description | Example |
+| ---- | ----------- | ------- |
+| MONGO_HOST | mongodb endpoint | localhost:27017 |
+| MONGO_DB | Database name to connect to | literature |
+| MONGO_COLLECTIONS | Collection name to connect to | quotes |
+| MONGO_USER | User name to authenticate | myuser |
+| MONGO_PASSWORD | Password | mypassword |
+| PIPELINE_CLASS | Service name to run | net.yuwtennis.app.pipelines.MongoIOSimpleWriteService |
+| LOG4J_LEVEL | See [Level](https://logging.apache.org/log4j/2.x/log4j-api/apidocs/org/apache/logging/log4j/Level.html) | INFO |
+
+
+#### Actions
+
+1. Unit test
+```
+make utest
+```
+
+2. Clean artifacts
+```
+make clean
+```
+
+3. Package
+```
+make package
+```
+
+4. Run pipeline
+```
+make run
+```

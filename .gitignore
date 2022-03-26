@@ -1,2 +1,6 @@
 /python/venv/
 /.idea/
+/java/java.iml
+/python/python.iml
+/java/target/
+/envrc.sample
