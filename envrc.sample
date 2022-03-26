@@ -1,0 +1,8 @@
+# For java
+export MONGO_HOST="localhost:27017"
+export MONGO_DB="literature"
+export MONGO_COLLECTION="quotes"
+export MONGO_USER="ywatanabe"
+export MONGO_PASSWORD="ywatanabe"
+export PIPELINE_CLASS="net.yuwtennis.app.pipelines.MongoIOSimpleWriteService"
+export LOG4J_LEVEL="INFO"
