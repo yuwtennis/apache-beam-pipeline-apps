@@ -1,6 +1,8 @@
 package net.yuwtennis.app.pipelines.connectors;
 
 import org.apache.beam.sdk.Pipeline;
+import org.apache.beam.sdk.io.mongodb.AggregationQuery;
+import org.apache.beam.sdk.io.mongodb.FindQuery;
 import org.apache.beam.sdk.io.mongodb.MongoDbIO;
 import org.apache.beam.sdk.values.PCollection;
 import org.bson.Document;
@@ -47,5 +49,20 @@ public class MongoIORepository {
                         .withUri((uri))
                         .withDatabase(database)
                         .withCollection(collection));
+    }
+
+    public static PCollection<Document> ReadWithCustomQuery(
+            Pipeline p,
+            String uri,
+            String database,
+            String collection,
+            FindQuery queryBuilder) {
+
+        return p.apply(
+                MongoDbIO.read()
+                        .withUri((uri))
+                        .withDatabase(database)
+                        .withCollection(collection)
+                        .withQueryFn(queryBuilder));
     }
 }
