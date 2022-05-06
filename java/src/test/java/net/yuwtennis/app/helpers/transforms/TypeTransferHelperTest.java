@@ -11,7 +11,9 @@ public class TypeTransferHelperTest {
 
     @Before
     public void setUp() {
-        String data = "{sentence: 'SOMEVALUE'}";
+        // https://www.mongodb.com/docs/manual/reference/mongodb-extended-json/#example
+        // Use canonical format
+        data = "{\"a\":\"hello\"}";
     }
 
     @Test
