@@ -21,7 +21,7 @@ import java.util.List;
 
 import static net.yuwtennis.app.pipelines.connectors.MongoIORepository.ReadWithCustomQuery;
 
-public class MongoIOSimpleQueryService {
+public class MongoIOSimpleQueryService implements PipelineService{
     public String uri ;
     public String database ;
     public String collection ;
@@ -49,23 +49,20 @@ public class MongoIOSimpleQueryService {
     public void run(Pipeline p) {
         this.logger.info("Running pipeline...") ;
 
+        // BSON document as filter
+        // https://github.com/apache/beam/blob/v2.36.0/sdks/java/io/mongodb/src/main/java/org/apache/beam/sdk/io/mongodb/FindQuery.java#L79
         String filter = "{}" ;
+
+        // Will be passed to Projection
+        // https://github.com/apache/beam/blob/v2.36.0/sdks/java/io/mongodb/src/main/java/org/apache/beam/sdk/io/mongodb/FindQuery.java#L109
         List<String> projections = new ArrayList<String>() ;
-        projections.add("{sentence: 1}");
+        projections.add("sentence");
 
         FindQuery findQuery = FindQuery
                 .create()
                 .withFilters(TypeTransferHelper.strToBSONDocument(filter))
-                .withLimit(0)
+                .withLimit(10)
                 .withProjection(projections) ;
-
-        PCollection<SimpleEntity> pcol = p.apply(
-                Create.of(StaticElements.LINES)).setCoder(StringUtf8Coder.of()
-        ).apply(
-                MapElements
-                        .into(TypeDescriptor.of(SimpleEntity.class))
-                        .via(SimpleEntity::new)
-        );
 
         // From org.bson.Document to String
         PCollection<Document> r_docs = ReadWithCustomQuery(
