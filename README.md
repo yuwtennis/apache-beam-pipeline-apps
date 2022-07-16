@@ -32,10 +32,13 @@ Not just for personal studying, but also would like to help people with pipeline
 ## Available apps
 
 ### Java
-| Pipeline Name | Description | State |
-| ---------------- | ----------- | ----- |
-| MongoIOSimpleReadService | Simply read from mongodb | Done |
-| MongoIOSimpleWriteService | Simply read from mongodb | Done |
+| Pipeline Name                     | Description                                       | State |
+|-----------------------------------|---------------------------------------------------| ----- |
+| MongoIOSimpleReadService          | Simply read from mongodb                          | Done |
+| MongoIOSimpleWriteService         | Simply write to mongodb                           | Done |
+| MongoIOSimpleQueryService         | Simply read from mongodb using custom query       | Done |
+| ElasticsearchIOSimpleReadService  | Simply read from elasticsearch using custom query | Done |
+| ElasticsearchIOSimpleWriteService | Simply write to elasticsearch.                    | Done |
 
 ### Python
 

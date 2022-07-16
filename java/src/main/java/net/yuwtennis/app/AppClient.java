@@ -24,7 +24,9 @@ public class AppClient {
                                 .getDeclaredConstructor()
                                 .newInstance();
 
-            object.run(p);
+            object
+                    .build(p)
+                    .run().waitUntilFinish() ;
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

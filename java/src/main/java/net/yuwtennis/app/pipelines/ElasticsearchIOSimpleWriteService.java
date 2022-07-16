@@ -23,7 +23,7 @@ public class ElasticsearchIOSimpleWriteService implements PipelineService {
             ElasticsearchIOSimpleWriteService.class) ;
 
     public ElasticsearchIOSimpleWriteService() {
-        this.addresses = new String[] {"https://localhost:9200"};
+        this.addresses = new String[] {"http://localhost:9200"};
         this.index = "quote" ;
         this.type = "doc" ;
     }
@@ -48,7 +48,7 @@ public class ElasticsearchIOSimpleWriteService implements PipelineService {
         }
     }
 
-    public void run(Pipeline p) {
+    public Pipeline build(Pipeline p) {
         PCollection<String> pCol =  p.apply(
                 "ToPcollection",
                 Create.of(StaticElements.LINES)).setCoder(StringUtf8Coder.of()
@@ -61,5 +61,7 @@ public class ElasticsearchIOSimpleWriteService implements PipelineService {
                 this.addresses,
                 this.index,
                 this.type);
+
+        return p;
     }
 }

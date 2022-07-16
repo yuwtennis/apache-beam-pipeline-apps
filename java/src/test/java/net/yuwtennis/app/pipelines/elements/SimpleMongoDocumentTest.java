@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
-public class SimpleEntityTest {
+public class SimpleMongoDocumentTest {
 
     @Test
     public void toDocumentTest() {
