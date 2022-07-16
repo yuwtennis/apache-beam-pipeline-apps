@@ -2,12 +2,9 @@ package net.yuwtennis.app.pipelines;
 
 import net.yuwtennis.app.helpers.fns.PrintFn;
 import net.yuwtennis.app.helpers.transforms.TypeTransferHelper;
-import net.yuwtennis.app.pipelines.elements.SimpleEntity;
-import net.yuwtennis.app.pipelines.elements.StaticElements;
+import net.yuwtennis.app.pipelines.elements.SimpleMongoDocument;
 import org.apache.beam.sdk.Pipeline;
-import org.apache.beam.sdk.coders.StringUtf8Coder;
 import org.apache.beam.sdk.io.mongodb.FindQuery;
-import org.apache.beam.sdk.transforms.Create;
 import org.apache.beam.sdk.transforms.MapElements;
 import org.apache.beam.sdk.values.PCollection;
 import org.apache.beam.sdk.values.TypeDescriptor;
@@ -46,7 +43,7 @@ public class MongoIOSimpleQueryService implements PipelineService{
      *
      * @param p Pipeline instance
      */
-    public void run(Pipeline p) {
+    public Pipeline build(Pipeline p) {
         this.logger.info("Running pipeline...") ;
 
         // BSON document as filter
@@ -74,14 +71,14 @@ public class MongoIOSimpleQueryService implements PipelineService{
 
         r_docs.apply(
                 MapElements
-                        .into(TypeDescriptor.of(SimpleEntity.class))
-                        .via(SimpleEntity::fromDocument)
+                        .into(TypeDescriptor.of(SimpleMongoDocument.class))
+                        .via(SimpleMongoDocument::fromDocument)
         ).apply(
                 MapElements
                         .into(TypeDescriptors.strings())
-                        .via((SimpleEntity entity) -> entity.sentence)
+                        .via((SimpleMongoDocument entity) -> entity.sentence)
         ).apply(MapElements.via(new PrintFn()));
 
-        p.run().waitUntilFinish() ;
+        return p;
     }
 }

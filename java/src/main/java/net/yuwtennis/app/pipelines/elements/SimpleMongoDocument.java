@@ -1,6 +1,5 @@
 package net.yuwtennis.app.pipelines.elements;
 
-import net.yuwtennis.app.AppClient;
 import org.apache.beam.sdk.coders.AvroCoder;
 import org.apache.beam.sdk.coders.DefaultCoder;
 import org.apache.logging.log4j.LogManager;
@@ -11,16 +10,16 @@ import java.util.Map;
 
 // https://beam.apache.org/documentation/programming-guide/#annotating-custom-type-default-coder
 @DefaultCoder(AvroCoder.class)
-public class SimpleEntity {
+public class SimpleMongoDocument {
     private final static Logger logger = LogManager.getLogger(
-            SimpleEntity.class) ;
+            SimpleMongoDocument.class) ;
 
     public String sentence ;
 
     // no-argument constructor
-    public SimpleEntity() {}
+    public SimpleMongoDocument() {}
 
-    public SimpleEntity(String line) {
+    public SimpleMongoDocument(String line) {
         this.sentence = line ;
     }
 
@@ -41,9 +40,9 @@ public class SimpleEntity {
      * @param doc Mongo document
      * @return Instance of SimpleEntity
      */
-    public static SimpleEntity fromDocument(Document doc) {
-        SimpleEntity.logger.info("Queried document: {}", doc.toJson());
+    public static SimpleMongoDocument fromDocument(Document doc) {
+        SimpleMongoDocument.logger.info("Queried document: {}", doc.toJson());
 
-        return new SimpleEntity((String)doc.get("sentence"));
+        return new SimpleMongoDocument((String)doc.get("sentence"));
     }
 }

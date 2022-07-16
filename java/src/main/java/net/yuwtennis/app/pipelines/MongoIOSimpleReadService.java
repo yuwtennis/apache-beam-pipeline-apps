@@ -1,6 +1,6 @@
 package net.yuwtennis.app.pipelines;
 
-import net.yuwtennis.app.pipelines.elements.SimpleEntity;
+import net.yuwtennis.app.pipelines.elements.SimpleMongoDocument;
 import net.yuwtennis.app.helpers.fns.PrintFn;
 import net.yuwtennis.app.pipelines.elements.StaticElements;
 import org.apache.beam.sdk.Pipeline;
@@ -42,15 +42,15 @@ public class MongoIOSimpleReadService implements PipelineService {
      *
      * @param p Pipeline instance
      */
-    public void run(Pipeline p) {
+    public Pipeline build(Pipeline p) {
         this.logger.info("Running pipeline...") ;
 
-        PCollection<SimpleEntity> pcol = p.apply(
+        PCollection<SimpleMongoDocument> pcol = p.apply(
                 Create.of(StaticElements.LINES)).setCoder(StringUtf8Coder.of()
         ).apply(
                 MapElements
-                        .into(TypeDescriptor.of(SimpleEntity.class))
-                        .via(SimpleEntity::new)
+                        .into(TypeDescriptor.of(SimpleMongoDocument.class))
+                        .via(SimpleMongoDocument::new)
         );
 
         // From org.bson.Document to String
@@ -62,14 +62,14 @@ public class MongoIOSimpleReadService implements PipelineService {
 
         r_docs.apply(
                 MapElements
-                        .into(TypeDescriptor.of(SimpleEntity.class))
-                        .via(SimpleEntity::fromDocument)
+                        .into(TypeDescriptor.of(SimpleMongoDocument.class))
+                        .via(SimpleMongoDocument::fromDocument)
         ).apply(
                 MapElements
                         .into(TypeDescriptors.strings())
-                        .via((SimpleEntity entity) -> entity.sentence)
+                        .via((SimpleMongoDocument entity) -> entity.sentence)
         ).apply(MapElements.via(new PrintFn()));
 
-        p.run().waitUntilFinish() ;
+        return p;
     }
 }

@@ -1,6 +1,6 @@
 package net.yuwtennis.app.pipelines;
 
-import net.yuwtennis.app.pipelines.elements.SimpleEntity;
+import net.yuwtennis.app.pipelines.elements.SimpleMongoDocument;
 import net.yuwtennis.app.pipelines.elements.StaticElements;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.coders.StringUtf8Coder;
@@ -40,15 +40,15 @@ public class MongoIOSimpleWriteService implements PipelineService {
      *
      * @param p Pipeline instance
      */
-    public void run(Pipeline p) {
+    public Pipeline build(Pipeline p) {
         this.logger.info("Running pipeline...") ;
 
-        PCollection<SimpleEntity> pcol = p.apply(
+        PCollection<SimpleMongoDocument> pcol = p.apply(
                 Create.of(StaticElements.LINES)).setCoder(StringUtf8Coder.of()
         ).apply(
                 MapElements
-                        .into(TypeDescriptor.of(SimpleEntity.class))
-                        .via(SimpleEntity::new)
+                        .into(TypeDescriptor.of(SimpleMongoDocument.class))
+                        .via(SimpleMongoDocument::new)
         );
 
 
@@ -56,7 +56,7 @@ public class MongoIOSimpleWriteService implements PipelineService {
         PCollection<Document> w_docs =  pcol.apply(
                 MapElements
                         .into(TypeDescriptor.of(Document.class))
-                        .via(SimpleEntity::toDocument));
+                        .via(SimpleMongoDocument::toDocument));
 
         Write(
                 w_docs,
@@ -64,6 +64,7 @@ public class MongoIOSimpleWriteService implements PipelineService {
                 this.database,
                 this.collection);
 
-        p.run().waitUntilFinish() ;
+
+        return p;
     }
 }
