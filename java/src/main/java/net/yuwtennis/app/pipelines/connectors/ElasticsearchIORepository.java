@@ -6,7 +6,14 @@ import org.apache.beam.sdk.values.PCollection;
 
 public class ElasticsearchIORepository {
 
-    public static void Write (PCollection<String> docs,
+    /***
+     * Write uses bulk api to index documents to elasticsearch
+     * @param docs
+     * @param addresses
+     * @param index
+     * @param type
+     */
+    public static void write (PCollection<String> docs,
                               String[] addresses,
                               String index,
                               String type) {
@@ -22,7 +29,16 @@ public class ElasticsearchIORepository {
         );
     }
 
-    public static PCollection<String> Read (
+    /***
+     * Read queries document from elasticsearch using specified query
+     * @param p
+     * @param addresses
+     * @param index
+     * @param type
+     * @param query
+     * @return
+     */
+    public static PCollection<String> read (
             Pipeline p,
             String[] addresses,
             String index,
@@ -39,6 +55,13 @@ public class ElasticsearchIORepository {
         return docs ;
     }
 
+    /***
+     * create creates connection object for accessing elasticsearch
+     * @param addresses
+     * @param index
+     * @param type
+     * @return
+     */
     private static ElasticsearchIO.ConnectionConfiguration create(
             String[] addresses,
             String index,
@@ -46,7 +69,9 @@ public class ElasticsearchIORepository {
         ElasticsearchIO.ConnectionConfiguration con = ElasticsearchIO.ConnectionConfiguration.create(
                 addresses,
                 index,
-                type);
+                type)
+                .withUsername(System.getenv("ES_USER"))
+                .withPassword(System.getenv("ES_PASSWORD"));
 
         return con ;
     }

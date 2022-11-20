@@ -25,7 +25,7 @@ public class ElasticsearchIOSimpleWriteService implements PipelineService {
     public ElasticsearchIOSimpleWriteService() {
         this.addresses = new String[] {"http://localhost:9200"};
         this.index = "quote" ;
-        this.type = "doc" ;
+        this.type = "_doc" ;
     }
 
     private static class StringToJsonFn extends SimpleFunction<String, String> {
@@ -56,7 +56,7 @@ public class ElasticsearchIOSimpleWriteService implements PipelineService {
                 MapElements.via(new StringToJsonFn())
         );
 
-        ElasticsearchIORepository.Write(
+        ElasticsearchIORepository.write(
                 pCol,
                 this.addresses,
                 this.index,
