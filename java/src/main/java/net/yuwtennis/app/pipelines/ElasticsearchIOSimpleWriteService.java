@@ -56,7 +56,7 @@ public class ElasticsearchIOSimpleWriteService implements PipelineService {
                 MapElements.via(new StringToJsonFn())
         );
 
-        ElasticsearchIORepository.Write(
+        ElasticsearchIORepository.write(
                 pCol,
                 this.addresses,
                 this.index,

@@ -31,7 +31,7 @@ public class ElasticsearchIOSimpleReadService implements PipelineService {
     }
 
     public Pipeline build(Pipeline p) {
-        PCollection<String> pCol = ElasticsearchIORepository.Read(
+        PCollection<String> pCol = ElasticsearchIORepository.read(
                 p,
                 this.addresses,
                 this.index,
