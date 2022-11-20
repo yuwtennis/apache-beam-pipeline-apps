@@ -25,7 +25,7 @@ public class ElasticsearchIOSimpleWriteService implements PipelineService {
     public ElasticsearchIOSimpleWriteService() {
         this.addresses = new String[] {"http://localhost:9200"};
         this.index = "quote" ;
-        this.type = "doc" ;
+        this.type = "_doc" ;
     }
 
     private static class StringToJsonFn extends SimpleFunction<String, String> {
