@@ -18,7 +18,7 @@ public class ElasticsearchIORepository {
                               String index,
                               String type) {
 
-        ElasticsearchIO.ConnectionConfiguration con = create(addresses, index, type) ;
+        ElasticsearchIO.ConnectionConfiguration con = createConnection(addresses, index, type) ;
 
         docs.apply(
                 "ToElasticsearch",
@@ -45,7 +45,7 @@ public class ElasticsearchIORepository {
             String type,
             String query,
             Boolean enableMetadata) {
-        ElasticsearchIO.ConnectionConfiguration con = create(addresses, index, type) ;
+        ElasticsearchIO.ConnectionConfiguration con = createConnection(addresses, index, type) ;
 
         ElasticsearchIO.Read rd = ElasticsearchIO.read()
                 .withConnectionConfiguration(con)
@@ -58,6 +58,11 @@ public class ElasticsearchIORepository {
 
     public static class ReadOptBuilder {
 
+        /***
+         * setOptMetadata sets MetaData option to Read class object
+         * @param rd
+         * @param isMetadataEnabled
+         */
         public static void setOptMetadata(ElasticsearchIO.Read rd, Boolean isMetadataEnabled) {
             if(isMetadataEnabled) {
                 rd.withMetadata();
@@ -66,13 +71,13 @@ public class ElasticsearchIORepository {
     }
 
     /***
-     * create creates connection object for accessing elasticsearch
+     * createConnection creates connection object for accessing elasticsearch
      * @param addresses
      * @param index
      * @param type
      * @return
      */
-    private static ElasticsearchIO.ConnectionConfiguration create(
+    private static ElasticsearchIO.ConnectionConfiguration createConnection(
             String[] addresses,
             String index,
             String type) {
