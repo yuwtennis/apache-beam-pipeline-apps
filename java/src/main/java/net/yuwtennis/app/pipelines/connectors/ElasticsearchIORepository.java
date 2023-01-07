@@ -43,16 +43,26 @@ public class ElasticsearchIORepository {
             String[] addresses,
             String index,
             String type,
-            String query) {
+            String query,
+            Boolean enableMetadata) {
         ElasticsearchIO.ConnectionConfiguration con = create(addresses, index, type) ;
 
-        PCollection<String> docs =  p.apply(
-                ElasticsearchIO.read()
-                        .withConnectionConfiguration(con)
-                        .withQuery(query)
-        ) ;
+        ElasticsearchIO.Read rd = ElasticsearchIO.read()
+                .withConnectionConfiguration(con)
+                .withQuery(query) ;
 
-        return docs ;
+        ReadOptBuilder.setOptMetadata(rd, enableMetadata);
+
+        return p.apply(rd);
+    }
+
+    public static class ReadOptBuilder {
+
+        public static void setOptMetadata(ElasticsearchIO.Read rd, Boolean isMetadataEnabled) {
+            if(isMetadataEnabled) {
+                rd.withMetadata();
+            }
+        }
     }
 
     /***
