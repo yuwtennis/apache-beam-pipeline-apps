@@ -62,7 +62,7 @@ tbc
 | MONGO_COLLECTIONS | Collection name to connect to | quotes |
 | MONGO_USER | User name to authenticate | myuser |
 | MONGO_PASSWORD | Password | mypassword |
-| PIPELINE_CLASS | Service name to run | net.yuwtennis.app.pipelines.MongoIOSimpleWriteService |
+| PIPELINE_CLASS | Service name to run | app.pipelines.MongoIOSimpleWrite |
 | LOG4J_LEVEL | See [Level](https://logging.apache.org/log4j/2.x/log4j-api/apidocs/org/apache/logging/log4j/Level.html) | INFO |
 
 
