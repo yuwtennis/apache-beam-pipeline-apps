@@ -24,6 +24,7 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter:5.7.1'
     implementation(
             "org.apache.beam:beam-sdks-java-core:${beamVersion}",
+            "org.apache.beam:beam-runners-direct-java:${beamVersion}",
             "org.apache.beam:beam-sdks-java-io-elasticsearch:${beamVersion}",
             "org.apache.beam:beam-sdks-java-io-mongodb:${beamVersion}",
             "org.apache.logging.log4j:log4j-api:${log4jVersion}",
