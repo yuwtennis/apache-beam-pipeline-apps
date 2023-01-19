@@ -50,7 +50,6 @@ public class ElasticsearchIORepository {
         ElasticsearchIO.Read rd = ElasticsearchIO.read()
                 .withConnectionConfiguration(con)
                 .withQuery(query) ;
-
         ReadOptBuilder.setOptMetadata(rd, enableMetadata);
 
         return p.apply(rd);

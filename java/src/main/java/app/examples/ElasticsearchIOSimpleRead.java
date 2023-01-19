@@ -16,6 +16,7 @@ public class ElasticsearchIOSimpleRead {
     private static final String index = "quote" ;
     private static final String type = "doc" ;
     private static final String query = "{\"query\": {\"match_all\": {}}}" ;
+    private static final Boolean enableMetadata = true ;
 
     final Logger logger = LogManager.getLogger(
             ElasticsearchIOSimpleRead.class) ;
@@ -27,7 +28,7 @@ public class ElasticsearchIOSimpleRead {
                 index,
                 type,
                 query,
-                true) ;
+                enableMetadata) ;
 
         pCol.apply(MapElements.via(new PrintFn())) ;
     }
