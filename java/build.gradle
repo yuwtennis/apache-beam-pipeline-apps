@@ -1,0 +1,54 @@
+plugins {
+    id 'java'
+    id 'checkstyle'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+ext {
+    beamVersion = "2.42.+"
+    log4jVersion = "2.19.+"
+    autoValueVersion = "1.10.+"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation "org.junit.jupiter:junit-jupiter:5.7.1"
+    compileOnly "com.google.auto.value:auto-value-annotations:${autoValueVersion}"
+    implementation(
+            "org.apache.beam:beam-sdks-java-core:${beamVersion}",
+            "org.apache.beam:beam-runners-direct-java:${beamVersion}",
+            "org.apache.beam:beam-sdks-java-io-elasticsearch:${beamVersion}",
+            "org.apache.beam:beam-sdks-java-io-mongodb:${beamVersion}",
+            "org.apache.logging.log4j:log4j-api:${log4jVersion}",
+            "org.apache.logging.log4j:log4j-core:${log4jVersion}",
+            "org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}",
+            "org.mongodb:mongodb-driver-sync:4.6.0"
+    )
+    annotationProcessor "com.google.auto.value:auto-value:${autoValueVersion}"
+}
+
+test {
+    useJUnitPlatform()
+
+    // Environment variables
+    def envs = [
+            ES_HOSTS: "192.168.1.1:9200,192.168.1.2:9200",
+            ES_INDEX: "my_index",
+            ES_TYPE: "_doc",
+            ES_USERNAME: "my_username",
+            ES_PASSWORD: "my_password",
+            MONGO_HOST: "192.168.1.1",
+            MONGO_DB: "my_db",
+            MONGO_COLLECTION: "my_collection",
+            MONGO_USERNAME: "my_username",
+            MONGO_PASSWORD: "my_password",
+            SOME_KEY: "some_key"
+    ]
+    environment(envs)
+}

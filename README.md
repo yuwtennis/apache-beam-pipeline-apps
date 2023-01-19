@@ -49,7 +49,6 @@ tbc
 ### For java
 #### Pre-requisite
 
-* mvn (Tested on `3.8.4`)
 * java (Tested on `openjdk 11.0.15`)
 * mongodb if using `connector.MongoIORepository`. See `scripts/mongodb/createUser.js` for required roles.
 
@@ -62,28 +61,5 @@ tbc
 | MONGO_COLLECTIONS | Collection name to connect to | quotes |
 | MONGO_USER | User name to authenticate | myuser |
 | MONGO_PASSWORD | Password | mypassword |
-| PIPELINE_CLASS | Service name to run | net.yuwtennis.app.pipelines.MongoIOSimpleWriteService |
+| PIPELINE_CLASS | Service name to run | app.pipelines.MongoIOSimpleWrite |
 | LOG4J_LEVEL | See [Level](https://logging.apache.org/log4j/2.x/log4j-api/apidocs/org/apache/logging/log4j/Level.html) | INFO |
-
-
-#### Actions
-
-1. Unit test
-```
-make utest
-```
-
-2. Clean artifacts
-```
-make clean
-```
-
-3. Package
-```
-make package
-```
-
-4. Run pipeline
-```
-make run
-```
