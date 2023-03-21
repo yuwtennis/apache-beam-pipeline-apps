@@ -14,9 +14,13 @@ jobs:
         with:
           distribution: temurin
           java-version: 11
-      - name: Change directory
-        run: cd java
-      - name: Setup Gradle
+      - name: Run test
         uses: gradle/gradle-build-action@v2
-      - name: Execute Gradle test
-        run: ./gradlew test
+        with:
+          arguments: test
+          build-root-directory: java/
+      - name: Run check style
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: checkstyleMain
+          build-root-directory: java/
