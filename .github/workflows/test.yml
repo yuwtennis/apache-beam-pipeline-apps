@@ -15,4 +15,8 @@ jobs:
           distribution: temurin
           java-version: 11
       - name: Execute Gradle test
-        run: cd java ; ./gradlew test
+        run: | 
+          cd java
+          ./gradlew test
+          ./gradlew checkstyleMain
+          ./gradlew checkstyleTest
