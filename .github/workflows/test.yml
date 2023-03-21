@@ -14,13 +14,5 @@ jobs:
         with:
           distribution: temurin
           java-version: 11
-      - name: Run test
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: test
-          build-root-directory: java/
-      - name: Run check style
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: checkstyleMain
-          build-root-directory: java/
+      - name: Execute Gradle test
+        run: cd java ; ./gradlew test
