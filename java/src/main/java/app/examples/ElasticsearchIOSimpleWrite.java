@@ -1,11 +1,14 @@
 package app.examples;
 
+import app.pipelines.values.envs.ElasticsearchEnvVars;
+import app.pipelines.values.envs.EnvVars;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import app.pipelines.connectors.ElasticsearchIORepository;
 import app.pipelines.elements.Quote;
 import app.pipelines.elements.StaticElements;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.coders.StringUtf8Coder;
+import org.apache.beam.sdk.io.elasticsearch.ElasticsearchIO;
 import org.apache.beam.sdk.options.PipelineOptions;
 import org.apache.beam.sdk.options.PipelineOptionsFactory;
 import org.apache.beam.sdk.transforms.Create;
@@ -16,10 +19,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class ElasticsearchIOSimpleWrite {
-
-    private static final String[] addresses = new String[] {"http://localhost:9200"} ;
-    private static final String index = "quote" ;
-    private static final String type = "_doc" ;
 
     final Logger logger = LogManager.getLogger(
             ElasticsearchIOSimpleWrite.class) ;
@@ -45,6 +44,9 @@ public class ElasticsearchIOSimpleWrite {
     }
 
     public static void build(org.apache.beam.sdk.Pipeline p) {
+        EnvVars<ElasticsearchEnvVars.Elasticsearch> envVars = new ElasticsearchEnvVars() ;
+        ElasticsearchEnvVars.Elasticsearch esVars = envVars.loadEnv();
+
         PCollection<String> pCol =  p.apply(
                 "ToPcollection",
                 Create.of(StaticElements.LINES)).setCoder(StringUtf8Coder.of()
@@ -52,11 +54,22 @@ public class ElasticsearchIOSimpleWrite {
                 MapElements.via(new StringToJsonFn())
         );
 
+        // Use TLS connection as default. Be close to real world configuration.
+        // Keystore needs to be configured in advance. See TUTORIAL.md for example configuration.
+        ElasticsearchIO.ConnectionConfiguration con = ElasticsearchIO.ConnectionConfiguration.create(
+                        esVars.hosts().toArray(new String[0]),
+                        esVars.indexName(),
+                        esVars.mappingType())
+                .withUsername(esVars.username())
+                .withPassword(esVars.password())
+                .withTrustSelfSignedCerts(esVars.trustSelfSignedCerts())
+                .withKeystorePath(esVars.keyStorePath())
+                .withKeystorePassword(esVars.keyStorePassword());
+
         ElasticsearchIORepository.write(
                 pCol,
-                addresses,
-                index,
-                type);
+                con
+);
     }
 
     public static void main(String[] args)  {

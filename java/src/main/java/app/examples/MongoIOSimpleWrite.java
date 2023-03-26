@@ -2,6 +2,8 @@ package app.examples;
 
 import app.pipelines.elements.SimpleMongoDocument;
 import app.pipelines.elements.StaticElements;
+import app.pipelines.values.envs.EnvVars;
+import app.pipelines.values.envs.MongoDbEnvVars;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.coders.StringUtf8Coder;
 import org.apache.beam.sdk.options.PipelineOptions;
@@ -18,13 +20,6 @@ import static app.pipelines.connectors.MongoIORepository.Write;
 
 public class MongoIOSimpleWrite {
 
-    private static final String uri = String.format("mongodb://%s:%s@%s",
-            System.getenv("MONGO_USER"),
-            System.getenv("MONGO_PASSWORD"),
-            System.getenv("MONGO_HOST"));;
-    private static final String database = System.getenv("MONGO_DB");
-    private static final String collection = System.getenv("MONGO_COLLECTION") ;
-
     final Logger logger = LogManager.getLogger(
             MongoIOSimpleWrite.class) ;
 
@@ -33,6 +28,9 @@ public class MongoIOSimpleWrite {
      * @param p Pipeline instance
      */
     public static void build(org.apache.beam.sdk.Pipeline p) {
+        EnvVars<MongoDbEnvVars.MongoDb> envVars = new MongoDbEnvVars();
+        MongoDbEnvVars.MongoDb mongoDbVars = envVars.loadEnv();
+
         PCollection<SimpleMongoDocument> pcol = p.apply(
                 Create.of(StaticElements.LINES)).setCoder(StringUtf8Coder.of()
         ).apply(
@@ -49,9 +47,10 @@ public class MongoIOSimpleWrite {
 
         Write(
                 w_docs,
-                uri,
-                database,
-                collection);
+                String.format("mongodb://%s:%s@%s",
+                        mongoDbVars.username(), mongoDbVars.password(), mongoDbVars.host()),
+                mongoDbVars.dbName(),
+                mongoDbVars.collectionName());
     }
 
     public static void main(String[] args)  {

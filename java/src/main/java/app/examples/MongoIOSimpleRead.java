@@ -3,6 +3,8 @@ package app.examples;
 import app.helpers.fns.PrintFn;
 import app.pipelines.elements.SimpleMongoDocument;
 import app.pipelines.elements.StaticElements;
+import app.pipelines.values.envs.EnvVars;
+import app.pipelines.values.envs.MongoDbEnvVars;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.coders.StringUtf8Coder;
 import org.apache.beam.sdk.options.PipelineOptions;
@@ -20,13 +22,6 @@ import static app.pipelines.connectors.MongoIORepository.Read;
 
 public class MongoIOSimpleRead {
 
-    private static final String uri = String.format("mongodb://%s:%s@%s",
-            System.getenv("MONGO_USER"),
-            System.getenv("MONGO_PASSWORD"),
-            System.getenv("MONGO_HOST"));;
-    private static final String database = System.getenv("MONGO_DB");
-    private static final String collection = System.getenv("MONGO_COLLECTION") ;
-
     final Logger logger = LogManager.getLogger(
             MongoIOSimpleRead.class) ;
 
@@ -35,6 +30,9 @@ public class MongoIOSimpleRead {
      * @param p Pipeline instance
      */
     public static void build(org.apache.beam.sdk.Pipeline p) {
+        EnvVars<MongoDbEnvVars.MongoDb> envVars = new MongoDbEnvVars();
+        MongoDbEnvVars.MongoDb mongoDbVars = envVars.loadEnv();
+
         PCollection<SimpleMongoDocument> pcol = p.apply(
                 Create.of(StaticElements.LINES)).setCoder(StringUtf8Coder.of()
         ).apply(
@@ -46,9 +44,10 @@ public class MongoIOSimpleRead {
         // From org.bson.Document to String
         PCollection<Document> r_docs = Read(
                 p,
-                uri,
-                database,
-                collection);
+                String.format("mongodb://%s:%s@%s",
+                        mongoDbVars.username(), mongoDbVars.password(), mongoDbVars.host()),
+                mongoDbVars.dbName(),
+                mongoDbVars.collectionName());
 
         r_docs.apply(
                 MapElements

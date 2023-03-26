@@ -1,16 +1,17 @@
 package app.helpers.transforms;
 
 import org.bson.BsonDocument;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 
 public class TypeTransferHelperTest {
-    private String data ;
+    private static String data ;
 
-    @Before
-    public void setUp() {
+    @BeforeAll
+    static void setUp() {
         // https://www.mongodb.com/docs/manual/reference/mongodb-extended-json/#example
         // Use canonical format
         data = "{\"a\":\"hello\"}";

@@ -3,6 +3,8 @@ package app.examples;
 import app.helpers.fns.PrintFn;
 import app.helpers.transforms.TypeTransferHelper;
 import app.pipelines.elements.SimpleMongoDocument;
+import app.pipelines.values.envs.EnvVars;
+import app.pipelines.values.envs.MongoDbEnvVars;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.mongodb.FindQuery;
 import org.apache.beam.sdk.options.PipelineOptions;
@@ -21,12 +23,6 @@ import java.util.List;
 import static app.pipelines.connectors.MongoIORepository.ReadWithCustomQuery;
 
 public class MongoIOSimpleQuery {
-    private static final String uri = String.format("mongodb://%s:%s@%s",
-            System.getenv("MONGO_USER"),
-            System.getenv("MONGO_PASSWORD"),
-            System.getenv("MONGO_HOST"));;
-    private static final String database = System.getenv("MONGO_DB");
-    private static final String collection = System.getenv("MONGO_COLLECTION") ;
     final Logger logger = LogManager.getLogger(
             MongoIOSimpleRead.class) ;
 
@@ -35,6 +31,8 @@ public class MongoIOSimpleQuery {
      * @param p Pipeline instance
      */
     public static void build(org.apache.beam.sdk.Pipeline p) {
+        EnvVars<MongoDbEnvVars.MongoDb> envVars = new MongoDbEnvVars();
+        MongoDbEnvVars.MongoDb mongoDbVars = envVars.loadEnv();
 
         // BSON document as filter
         // https://github.com/apache/beam/blob/v2.36.0/sdks/java/io/mongodb/src/main/java/org/apache/beam/sdk/io/mongodb/FindQuery.java#L79
@@ -54,9 +52,10 @@ public class MongoIOSimpleQuery {
         // From org.bson.Document to String
         PCollection<Document> r_docs = ReadWithCustomQuery(
                 p,
-                uri,
-                database,
-                collection,
+                String.format("mongodb://%s:%s@%s",
+                        mongoDbVars.username(), mongoDbVars.password(), mongoDbVars.host()),
+                mongoDbVars.dbName(),
+                mongoDbVars.collectionName(),
                 findQuery);
 
         r_docs.apply(

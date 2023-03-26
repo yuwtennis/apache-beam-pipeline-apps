@@ -1,4 +1,6 @@
 # For java
+
+## MongoDb
 #export MONGO_HOST="localhost:27017"
 #export MONGO_DB="literature"
 #export MONGO_COLLECTION="quotes"
@@ -6,5 +8,13 @@
 #export MONGO_PASSWORD="ywatanabe"
 export PIPELINE_CLASS="app.pipelines.ElasticsearchIOSimpleWrite"
 export LOG4J_LEVEL="INFO"
-export ES_USER="elastic"
-export ES_PASSWORD="UtqR3rgW8xfzIQQzwO4e"
+
+## Elasticsearch
+export ES_HOSTS="https://localhost:9201"
+export ES_INDEX="my-index"
+export ES_TYPE="_doc"
+export ES_TRUST_SELF_SIGNED_CERTS="true"
+export ES_USERNAME="elastic"
+export ES_PASSWORD="KtXqBbDaloJbAoEbMIfN"
+export ES_KEY_STORE_PATH="/home/ywatanabe/Development/apps/elasticsearch-7.17.7/config/certs/elastic-stack-ca.p12"
+export ES_KEY_STORE_PASSWORD="2NRpJSeJXdcMEXWv"

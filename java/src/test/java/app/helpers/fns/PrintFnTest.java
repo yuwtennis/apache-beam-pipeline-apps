@@ -1,16 +1,16 @@
 package app.helpers.fns;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import static org.junit.Assert.assertEquals;
 
 public class PrintFnTest {
 
-    private String data ;
+    private static String data ;
 
-    @Before
-    public void setUp() {
+    @BeforeAll
+    static void setUp() {
         data = "SOMEDATA";
     }
 
