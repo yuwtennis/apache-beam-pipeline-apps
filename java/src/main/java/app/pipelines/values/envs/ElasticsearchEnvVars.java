@@ -13,14 +13,32 @@ public class ElasticsearchEnvVars extends EnvVars<ElasticsearchEnvVars.Elasticse
     private static final String ES_TYPE = "ES_TYPE";
     private static final String ES_USERNAME = "ES_USERNAME";
     private static final String ES_PASSWORD = "ES_PASSWORD";
+    private static final String ES_TRUST_SELF_SIGNED_CERTS = "ES_TRUST_SELF_SIGNED_CERTS";
+    private static final String ES_KEY_STORE_PATH = "ES_KEY_STORE_PATH";
+    private static final String ES_KEY_STORE_PASSWORD = "ES_KEY_STORE_PASSWORD";
 
     @AutoValue
     public abstract static class Elasticsearch {
 
         public static Elasticsearch create(
-                String[] hosts, String indexName, String mappingType, String username, String password) {
+                String[] hosts,
+                String indexName,
+                String mappingType,
+                String username,
+                String password,
+                Boolean trustSelfSignedCerts,
+                String keyStorePath,
+                String keyStorePassword
+                ) {
             return new AutoValue_ElasticsearchEnvVars_Elasticsearch(
-                    ImmutableList.copyOf(hosts), indexName, mappingType, username, password);
+                    ImmutableList.copyOf(hosts),
+                    indexName,
+                    mappingType,
+                    username,
+                    password,
+                    trustSelfSignedCerts,
+                    keyStorePath,
+                    keyStorePassword);
         }
 
         public abstract ImmutableList<String> hosts();
@@ -32,6 +50,12 @@ public class ElasticsearchEnvVars extends EnvVars<ElasticsearchEnvVars.Elasticse
         public abstract String username();
 
         public abstract String password();
+
+        public abstract Boolean trustSelfSignedCerts();
+
+        public abstract String keyStorePath();
+
+        public abstract String keyStorePassword();
     }
 
     /***
@@ -46,7 +70,10 @@ public class ElasticsearchEnvVars extends EnvVars<ElasticsearchEnvVars.Elasticse
                 envMap.get(ES_INDEX),
                 envMap.get(ES_TYPE),
                 envMap.get(ES_USERNAME),
-                envMap.get(ES_PASSWORD)
+                envMap.get(ES_PASSWORD),
+                Boolean.valueOf(envMap.get(ES_TRUST_SELF_SIGNED_CERTS)),
+                envMap.get(ES_KEY_STORE_PATH),
+                envMap.get(ES_KEY_STORE_PASSWORD)
         );
     }
 }

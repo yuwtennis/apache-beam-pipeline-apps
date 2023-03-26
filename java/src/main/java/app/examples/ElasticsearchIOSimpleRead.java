@@ -24,13 +24,18 @@ public class ElasticsearchIOSimpleRead {
 
         EnvVars<ElasticsearchEnvVars.Elasticsearch> envVars = new ElasticsearchEnvVars() ;
         ElasticsearchEnvVars.Elasticsearch esVars = envVars.loadEnv();
-        // TODO Implement Key store
+
+        // Use TLS connection as default. Be close to real world configuration.
+        // Keystore needs to be configured in advance. See TUTORIAL.md for example configuration.
         ElasticsearchIO.ConnectionConfiguration con = ElasticsearchIO.ConnectionConfiguration.create(
                         esVars.hosts().toArray(new String[0]),
                         esVars.indexName(),
                         esVars.mappingType())
                 .withUsername(esVars.username())
-                .withPassword(esVars.password());
+                .withPassword(esVars.password())
+                .withTrustSelfSignedCerts(esVars.trustSelfSignedCerts())
+                .withKeystorePath(esVars.keyStorePath())
+                .withKeystorePassword(esVars.keyStorePassword());
 
         PCollection<String> pCol = ElasticsearchIORepository.read(
                 p,

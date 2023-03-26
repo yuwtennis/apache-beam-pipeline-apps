@@ -18,6 +18,8 @@ public class ElasticsearchEnvVarsTest {
         assertEquals("_doc", esVars.mappingType());
         assertEquals("my_username", esVars.username());
         assertEquals("my_password", esVars.password());
+        assertEquals("abc", esVars.keyStorePath());
+        assertEquals("abc", esVars.keyStorePath());
     }
 
     @Test
