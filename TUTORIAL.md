@@ -1,8 +1,10 @@
 Tips for running app.
 
-* Creating self-signed certificate for elasticsearch
+* TLS
+  * [Creating self-signed certificate for elasticsearch](#creating-self-signed-certificate-for-elasticsearch)
+  * [Extracting CA crt and key from ECK secrets](#extracting-ca-cert-and-key-from-eck-secrets)
 
-## Creating self-signed certificate for elasticsearch
+## Creating self-signed certificate for elasticsearch 
 
 1. Change directory to ES_HOME
 
@@ -69,3 +71,23 @@ cp elasticsearch/http.p12 config/certs/
 ```
 
 c.Configure _elasticsearch.yml_ and add password to elasticsearch keystore accordingly.
+
+
+## Extracting CA cert and key from ECK secrets
+
+This section will extract CA key and cert and combine them as PKCS#12 keystore.
+
+1. Extract CA Cert from secret
+```shell
+kubectl get secrets es-es-http-ca-internal -n YOUR_NAME_SPACE -o jsonpath='{.data.tls\.crt}' | base64 -d > ca.crt
+```
+
+2. Extract CA Key
+```shell
+kubectl get secrets es-es-http-ca-internal -n YOUR_NAME_SPACE -o jsonpath='{.data.tls\.key}' | base64 -d > ca.key
+```
+
+3. Combine crt and key as PKCS#12 keystore.
+```shell
+openssl pkcs12 -export -in ca.crt -inkey ca.key -out ca.p12 -name "Elastic CA certificate"
+```

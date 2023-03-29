@@ -1,9 +1,13 @@
 # apache-beam-pipeline-apps
 
-* [Directory model](#directory-model)
 * [Available apps](#available-apps)
   * [Java](#java)
   * [Python](#python)
+* [Tutorial](#tutorial)
+* [How to](#how-to)
+  * [Test](#test)
+  * [Build](#build)
+  * [Run](#run)
 
 ## Target audience
 
@@ -13,25 +17,12 @@ People who use apache beam.
 
 Not just for personal studying, but also would like to help people with pipeline implementation.
 
-## Directory model
-```
-.
-└── src
-    ├── main
-    │   └── java
-    │       └── net
-    │           └── yuwtennis
-    │               └── app
-    │                   ├── helpers
-    │                   │   └── fns
-    │                   └── pipelines
-    │                       ├── connectors
-    │                       └── elements
-```
-
 ## Available apps
 
 ### Java
+
+See [examples](java/src/main/java/app/examples).
+
 | Pipeline Name                     | Description                                       | State |
 |-----------------------------------|---------------------------------------------------| ----- |
 | MongoIOSimpleReadService          | Simply read from mongodb                          | Done |
@@ -44,22 +35,40 @@ Not just for personal studying, but also would like to help people with pipeline
 
 tbc
 
-## Available actions
+## Tutorial
 
-### For java
-#### Pre-requisite
+See [TUTORIAL.md](TUTORIAL.md).
 
-* java (Tested on `openjdk 11.0.15`)
-* mongodb if using `connector.MongoIORepository`. See `scripts/mongodb/createUser.js` for required roles.
+## How to
 
-#### Available environment variables
+### Java
 
-| Name | Description | Example |
-| ---- | ----------- | ------- |
-| MONGO_HOST | mongodb endpoint | localhost:27017 |
-| MONGO_DB | Database name to connect to | literature |
-| MONGO_COLLECTIONS | Collection name to connect to | quotes |
-| MONGO_USER | User name to authenticate | myuser |
-| MONGO_PASSWORD | Password | mypassword |
-| PIPELINE_CLASS | Service name to run | app.pipelines.MongoIOSimpleWrite |
-| LOG4J_LEVEL | See [Level](https://logging.apache.org/log4j/2.x/log4j-api/apidocs/org/apache/logging/log4j/Level.html) | INFO |
+#### Test
+
+This is a instruction for running test locally. Tests are also ran in Github Action.
+
+```shell
+cd java/
+./gradlew test
+```
+
+#### Build
+
+```shell
+cd java/
+./gradlew shadowJar
+```
+
+#### Run
+```shell
+cd java
+
+# Set environment variables accordingly
+source ../envrc.sample
+
+# Run JAR file
+java -cp build/libs/java-1.0-SNAPSHOT-all.jar app.examples.APPNAME
+
+e.g
+java -cp build/libs/java-1.0-SNAPSHOT-all.jar app.examples.ElasticsearchIOSimpleRead
+```
