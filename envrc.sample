@@ -1,20 +1,66 @@
 # For java
 
-## MongoDb
-#export MONGO_HOST="localhost:27017"
-#export MONGO_DB="literature"
-#export MONGO_COLLECTION="quotes"
-#export MONGO_USER="ywatanabe"
-#export MONGO_PASSWORD="ywatanabe"
-export PIPELINE_CLASS="app.pipelines.ElasticsearchIOSimpleWrite"
-export LOG4J_LEVEL="INFO"
+## MongoDb settings
+
+###
+### Connection parameters
+###
+### All passed to withUri.
+### See
+### https://beam.apache.org/releases/javadoc/2.42.0/org/apache/beam/sdk/io/mongodb/MongoDbIO.Read.html#withUri-java.lang.String-
+
+### Mongo Host and port you are connecting to.
+# export MONGO_HOST="localhost:27017"
+
+### Mongo database name
+# export MONGO_DB="literature"
+
+### Mongo collection name
+# export MONGO_COLLECTION="quotes"
+
+### Mongo username
+# export MONGO_USER="ywatanabe"
+
+### Mongo password
+# export MONGO_PASSWORD="ywatanabe"
 
 ## Elasticsearch
-export ES_HOSTS="https://localhost:9201"
-export ES_INDEX="my-index"
-export ES_TYPE="_doc"
-export ES_TRUST_SELF_SIGNED_CERTS="true"
-export ES_USERNAME="elastic"
-export ES_PASSWORD="KtXqBbDaloJbAoEbMIfN"
-export ES_KEY_STORE_PATH="/home/ywatanabe/Development/apps/elasticsearch-7.17.7/config/certs/elastic-stack-ca.p12"
-export ES_KEY_STORE_PASSWORD="2NRpJSeJXdcMEXWv"
+
+###
+### Connection parameters
+###
+### All passed to ConnectionConfiguration
+### See
+### https://beam.apache.org/releases/javadoc/2.42.0/org/apache/beam/sdk/io/elasticsearch/ElasticsearchIO.ConnectionConfiguration.html
+
+### Elasticsearch host url. Multiple hosts are allowed with comma separated string.
+### e.g ES_HOSTS="https://host1:9200,https://host2:9200"
+# export ES_HOSTS="https://localhost:9201"
+
+### Index name
+#export ES_INDEX="my-index"
+
+### Mapping type
+#export ES_TYPE="_doc"
+
+### Trust self signed cert or not
+#export ES_TRUST_SELF_SIGNED_CERTS="true"
+
+### Username
+#export ES_USERNAME="elastic"
+
+### Password
+#export ES_PASSWORD="KtXqBbDaloJbAoEbMIfN"
+
+### Keystore
+### See
+### https://docs.oracle.com/javase/8/docs/api/java/security/KeyStore.html
+#export ES_KEY_STORE_PATH="/home/ywatanabe/Development/apps/elasticsearch-7.17.7/config/certs/elastic-stack-ca.p12"
+
+### Password for keystore
+#export ES_KEY_STORE_PASSWORD="2NRpJSeJXdcMEXWv"
+
+## Global
+
+### Log level
+# export LOG4J_LEVEL="INFO"
