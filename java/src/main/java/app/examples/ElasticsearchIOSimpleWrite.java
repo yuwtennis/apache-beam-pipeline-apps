@@ -69,7 +69,7 @@ public class ElasticsearchIOSimpleWrite {
         ElasticsearchIORepository.write(
                 pCol,
                 con
-);
+        );
     }
 
     public static void main(String[] args)  {
@@ -78,5 +78,4 @@ public class ElasticsearchIOSimpleWrite {
         build(pipeline) ;
         pipeline.run().waitUntilFinish() ;
     }
-
 }
