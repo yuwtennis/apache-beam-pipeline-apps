@@ -47,7 +47,7 @@ public class ElasticsearchIOSimpleRead {
     }
 
     public static void main(String[] args)  {
-        PipelineOptions options = PipelineOptionsFactory.fromArgs().withValidation().create();
+        PipelineOptions options = PipelineOptionsFactory.fromArgs(args).withValidation().create();
         Pipeline pipeline = Pipeline.create(options) ;
         build(pipeline) ;
         pipeline.run().waitUntilFinish() ;
