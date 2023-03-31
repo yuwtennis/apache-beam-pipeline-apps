@@ -15,16 +15,16 @@ import org.apache.beam.sdk.transforms.Create;
 import org.apache.beam.sdk.transforms.MapElements;
 import org.apache.beam.sdk.transforms.SimpleFunction;
 import org.apache.beam.sdk.values.PCollection;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 public class ElasticsearchIOSimpleWrite {
 
-    final Logger logger = LogManager.getLogger(
+    final Logger logger = LoggerFactory.getLogger(
             ElasticsearchIOSimpleWrite.class) ;
 
     private static class StringToJsonFn extends SimpleFunction<String, String> {
-        final Logger logger = LogManager.getLogger(
+        final Logger logger = LoggerFactory.getLogger(
                 StringToJsonFn.class
         );
 

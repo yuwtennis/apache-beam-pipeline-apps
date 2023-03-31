@@ -2,8 +2,8 @@ package app.pipelines.elements;
 
 import org.apache.beam.sdk.coders.AvroCoder;
 import org.apache.beam.sdk.coders.DefaultCoder;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.bson.Document;
 
 import java.util.HashMap;
@@ -12,7 +12,7 @@ import java.util.Map;
 // https://beam.apache.org/documentation/programming-guide/#annotating-custom-type-default-coder
 @DefaultCoder(AvroCoder.class)
 public class SimpleMongoDocument {
-    private final static Logger logger = LogManager.getLogger(
+    private final static Logger logger = LoggerFactory.getLogger(
             SimpleMongoDocument.class) ;
 
     public String sentence ;

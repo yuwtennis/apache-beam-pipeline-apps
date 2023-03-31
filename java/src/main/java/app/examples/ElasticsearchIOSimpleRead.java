@@ -10,12 +10,12 @@ import org.apache.beam.sdk.options.PipelineOptions;
 import org.apache.beam.sdk.options.PipelineOptionsFactory;
 import org.apache.beam.sdk.transforms.MapElements;
 import org.apache.beam.sdk.values.PCollection;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 public class ElasticsearchIOSimpleRead {
 
-    final Logger logger = LogManager.getLogger(
+    final Logger logger = LoggerFactory.getLogger(
             ElasticsearchIOSimpleRead.class) ;
 
     public static void build(Pipeline p) {
