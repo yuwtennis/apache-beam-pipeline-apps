@@ -12,15 +12,15 @@ import org.apache.beam.sdk.transforms.Create;
 import org.apache.beam.sdk.transforms.MapElements;
 import org.apache.beam.sdk.values.PCollection;
 import org.apache.beam.sdk.values.TypeDescriptor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.bson.Document;
 
 import static app.pipelines.connectors.MongoIORepository.Write;
 
 public class MongoIOSimpleWrite {
 
-    final Logger logger = LogManager.getLogger(
+    final Logger logger = LoggerFactory.getLogger(
             MongoIOSimpleWrite.class) ;
 
     /***
