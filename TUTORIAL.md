@@ -3,6 +3,7 @@ Tips for running app.
 * TLS
   * [Creating self-signed certificate for elasticsearch](#creating-self-signed-certificate-for-elasticsearch)
   * [Extracting CA crt and key from ECK secrets](#extracting-ca-cert-and-key-from-eck-secrets)
+  * [Indexing documents to eck using dataflow runner](#indexing-documents-to-eck-using-dataflow-runner)
 
 ## Creating self-signed certificate for elasticsearch 
 
@@ -79,15 +80,48 @@ This section will extract CA key and cert and combine them as PKCS#12 keystore.
 
 1. Extract CA Cert from secret
 ```shell
-kubectl get secrets es-es-http-ca-internal -n YOUR_NAME_SPACE -o jsonpath='{.data.tls\.crt}' | base64 -d > ca.crt
+export KUBE_NS=elastic
+mkdir certs ; cd certs
+kubectl get secrets es-es-http-ca-internal -n $KUBE_NS -o jsonpath='{.data.tls\.crt}' | base64 -d > ca.crt
 ```
 
 2. Extract CA Key
 ```shell
-kubectl get secrets es-es-http-ca-internal -n YOUR_NAME_SPACE -o jsonpath='{.data.tls\.key}' | base64 -d > ca.key
+kubectl get secrets es-es-http-ca-internal -n $KUBE_NS -o jsonpath='{.data.tls\.key}' | base64 -d > ca.key
 ```
 
 3. Combine crt and key as PKCS#12 keystore.
 ```shell
 openssl pkcs12 -export -in ca.crt -inkey ca.key -out ca.p12 -name "Elastic CA certificate"
 ```
+
+## Indexing documents to ECK using dataflow runner
+
+This section will outline how to index documents to TLS protected elasticsearch running on ECK.  
+You will need to stage keystore including CA key and certificate inside dataflow _workers_.
+
+There are several options to stage TLS cert on _workers_.
+
+- Use [fileToStage option](https://cloud.google.com/dataflow/docs/reference/pipeline-options) and expose as _files_ on the worker.
+- Bundle it inside [custom container](https://cloud.google.com/dataflow/docs/guides/using-custom-containers)  and use it as runtime environment for user code
+
+I will use _custom container_ for simplicity.
+
+1. Prepare keystore following instruction in [previous section](#extracting-ca-cert-and-key-from-eck-secrets).
+
+2. Build custom container and push to container registry. See [Dockerfile](java/Dockerfile) for example.
+
+3. Run pipeline. `--experiments=use_runner_v2` and `--sdkContainerImage` option will be required.
+
+```shell
+e.g
+java -cp build/libs/java-1.0-SNAPSHOT-all.jar app.examples.ElasticsearchIOSimpleWrite\
+      --runner=DataflowRunner\
+      --gcpTempLocation=MY_GS_STAGING_LOCATION\
+      --project=MY_PROJECT\
+      --region=MY_REGION\
+      --experiments=use_runner_v2\
+      --sdkContainerImage=MY_PUSHED_IMAGE
+```
+
+4. Verify documents are indexed to elasticsearch
