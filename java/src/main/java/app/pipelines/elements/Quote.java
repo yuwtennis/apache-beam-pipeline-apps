@@ -1,7 +1,8 @@
 package app.pipelines.elements;
 
-import org.apache.beam.sdk.coders.AvroCoder;
+
 import org.apache.beam.sdk.coders.DefaultCoder;
+import org.apache.beam.sdk.extensions.avro.coders.AvroCoder;
 
 @DefaultCoder(AvroCoder.class)
 public class Quote {
