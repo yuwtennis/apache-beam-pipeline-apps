@@ -1,7 +1,8 @@
 package app.pipelines.elements;
 
-import org.apache.beam.sdk.coders.AvroCoder;
+
 import org.apache.beam.sdk.coders.DefaultCoder;
+import org.apache.beam.sdk.extensions.avro.coders.AvroCoder;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.bson.Document;
