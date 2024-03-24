@@ -43,14 +43,14 @@ public class HttpResponseRequest {
         PCollection<KV<String, ImageRequest>> requests = p
                 .apply(Create.of(urls))
                 .apply("toImageRequest", MapElements.via(
-                        new SimpleFunction<String, KV<String, ImageRequest>>() {
+                        new SimpleFunction<>() {
                             @Override
                             public KV<String, ImageRequest> apply(String url) {
                                 return KV.of(
                                         url,
                                         ImageRequest.of(url));
                             }
-                }));
+                        }));
 
         KvCoder<String, ImageResponse> responseCoder = KvCoder.of(
                 StringUtf8Coder.of(), ImageResponseCoder.of());
@@ -77,8 +77,9 @@ public class HttpResponseRequest {
                 .apply("LogResults", ParDo.of(new DoFn<KV<String, ImageResponse>, Void>() {
                     @ProcessElement
                     public void processElement(ProcessContext c) {
-                        String url = c.element().getKey();
-                        ImageResponse response = c.element().getValue();
+                        String url = Objects.requireNonNull(c.element()).getKey();
+                        ImageResponse response = Objects.requireNonNull(c.element()).getValue();
+                        assert response != null;
                         LOG.info("{} Fetched image: {} with size: {}",
                                 Instant.now().toString(),
                                 url,
