@@ -5,6 +5,7 @@ import app.io.ImageRequest;
 import app.io.ImageResponse;
 import app.io.ImageResponseCoder;
 import autovalue.shaded.com.google.common.collect.ImmutableList;
+import org.apache.beam.io.requestresponse.ApiIOError;
 import org.apache.beam.io.requestresponse.RequestResponseIO;
 import org.apache.beam.io.requestresponse.Result;
 import org.apache.beam.sdk.Pipeline;
@@ -18,14 +19,22 @@ import org.apache.beam.sdk.values.KV;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 
 
 public class HttpResponseRequest {
-    private static final Logger LOG = LoggerFactory.getLogger(HttpResponseRequest.class);
+
     public static void main(String[] args) {
+        final Logger LOG = LoggerFactory.getLogger(HttpResponseRequest.class);
         List<String> urls = ImmutableList.of(
-                "https://storage.googleapis.com/generativeai-downloads/images/cake.jpg"
+                "https://storage.googleapis.com/generativeai-downloads/images/cake.jpg",
+                "https://storage.googleapis.com/generativeai-downloads/images/chocolate.png",
+                "https://storage.googleapis.com/generativeai-downloads/images/croissant.jpg",
+                "https://storage.googleapis.com/generativeai-downloads/images/dog_form.jpg",
+                "https://storage.googleapis.com/generativeai-downloads/images/factory.png",
+                "https://storage.googleapis.com/generativeai-downloads/images/scones.jpg"
         );
 
         PipelineOptions options = PipelineOptionsFactory.create();
@@ -54,9 +63,29 @@ public class HttpResponseRequest {
                                 responseCoder
                         )
                 );
-        /** ToDO Logging
-         * result.getFailures().xxx
-         */
+        result.getFailures()
+                .apply("LogErrors", ParDo.of(new DoFn<ApiIOError, Void>() {
+                    @ProcessElement
+                    public void processElement(ProcessContext c) {
+                        LOG.error("{} Failed to fetch image: {}",
+                                Instant.now().toString(),
+                                Objects.requireNonNull(c.element()).getMessage());
+                    }
+                }));
+
+        result.getResponses()
+                .apply("LogResults", ParDo.of(new DoFn<KV<String, ImageResponse>, Void>() {
+                    @ProcessElement
+                    public void processElement(ProcessContext c) {
+                        String url = c.element().getKey();
+                        ImageResponse response = c.element().getValue();
+                        LOG.info("{} Fetched image: {} with size: {}",
+                                Instant.now().toString(),
+                                url,
+                                response.getData().size()
+                                );
+                    }
+                }));
 
         p.run().waitUntilFinish();
     }

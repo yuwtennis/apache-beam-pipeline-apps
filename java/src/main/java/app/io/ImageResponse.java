@@ -14,9 +14,9 @@ public abstract class ImageResponse implements Serializable {
         return new AutoValue_ImageResponse.Builder();
     }
 
-    abstract String getMimeType();
+    public abstract String getMimeType();
 
-    abstract ByteString getData();
+    public abstract ByteString getData();
 
     @AutoValue.Builder
     abstract static class Builder {
