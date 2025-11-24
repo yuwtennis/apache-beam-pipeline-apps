@@ -1,0 +1,19 @@
+[project]
+name = "python"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "ywatanabe",email = "yu.w.tennis@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "apache-beam (>=2.69.0,<2.70.0)"
+]
+
+[tool.poetry]
+package-mode = false
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
