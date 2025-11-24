@@ -22,15 +22,15 @@ import java.util.List;
 
 import static app.pipelines.connectors.MongoIORepository.ReadWithCustomQuery;
 
-public class MongoIOSimpleQuery {
+public class MongoIOSimpleQuery implements Examples{
     final Logger logger = LoggerFactory.getLogger(
-            MongoIOSimpleRead.class) ;
+            MongoIOSimpleQuery.class) ;
 
     /***
      *
      * @param p Pipeline instance
      */
-    public static void build(org.apache.beam.sdk.Pipeline p) {
+    public void build(org.apache.beam.sdk.Pipeline p) {
         EnvVars<MongoDbEnvVars.MongoDb> envVars = new MongoDbEnvVars();
         MongoDbEnvVars.MongoDb mongoDbVars = envVars.loadEnv();
 
@@ -68,12 +68,4 @@ public class MongoIOSimpleQuery {
                         .via((SimpleMongoDocument entity) -> entity.sentence)
         ).apply(MapElements.via(new PrintFn()));
     }
-
-    public static void main(String[] args)  {
-        PipelineOptions options = PipelineOptionsFactory.create();
-        Pipeline pipeline = Pipeline.create(options) ;
-        build(pipeline) ;
-        pipeline.run().waitUntilFinish() ;
-    }
-
 }

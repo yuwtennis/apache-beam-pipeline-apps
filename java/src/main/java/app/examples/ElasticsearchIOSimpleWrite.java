@@ -9,8 +9,6 @@ import app.pipelines.elements.StaticElements;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.coders.StringUtf8Coder;
 import org.apache.beam.sdk.io.elasticsearch.ElasticsearchIO;
-import org.apache.beam.sdk.options.PipelineOptions;
-import org.apache.beam.sdk.options.PipelineOptionsFactory;
 import org.apache.beam.sdk.transforms.Create;
 import org.apache.beam.sdk.transforms.MapElements;
 import org.apache.beam.sdk.transforms.SimpleFunction;
@@ -18,10 +16,12 @@ import org.apache.beam.sdk.values.PCollection;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
-public class ElasticsearchIOSimpleWrite {
+public class ElasticsearchIOSimpleWrite implements Examples {
 
     final Logger logger = LoggerFactory.getLogger(
             ElasticsearchIOSimpleWrite.class) ;
+
+    public ElasticsearchIOSimpleWrite() {}
 
     private static class StringToJsonFn extends SimpleFunction<String, String> {
         final Logger logger = LoggerFactory.getLogger(
@@ -43,7 +43,7 @@ public class ElasticsearchIOSimpleWrite {
         }
     }
 
-    public static void build(org.apache.beam.sdk.Pipeline p) {
+    public void build(Pipeline p) {
         EnvVars<ElasticsearchEnvVars.Elasticsearch> envVars = new ElasticsearchEnvVars() ;
         ElasticsearchEnvVars.Elasticsearch esVars = envVars.loadEnv();
 
@@ -70,12 +70,5 @@ public class ElasticsearchIOSimpleWrite {
                 pCol,
                 con
         );
-    }
-
-    public static void main(String[] args)  {
-        PipelineOptions options = PipelineOptionsFactory.fromArgs(args).withValidation().create();
-        Pipeline pipeline = Pipeline.create(options) ;
-        build(pipeline) ;
-        pipeline.run().waitUntilFinish() ;
     }
 }

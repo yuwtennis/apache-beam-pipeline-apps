@@ -24,9 +24,9 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class HttpResponseRequest {
+public class HttpResponseRequest implements Examples {
 
-    public static void main(String[] args) {
+    public void build(Pipeline p)  {
         final Logger LOG = LoggerFactory.getLogger(HttpResponseRequest.class);
         List<String> urls = ImmutableList.of(
                 "https://storage.googleapis.com/generativeai-downloads/images/cake.jpg",
@@ -36,9 +36,6 @@ public class HttpResponseRequest {
                 "https://storage.googleapis.com/generativeai-downloads/images/factory.png",
                 "https://storage.googleapis.com/generativeai-downloads/images/scones.jpg"
         );
-
-        PipelineOptions options = PipelineOptionsFactory.create();
-        Pipeline p = Pipeline.create(options);
 
         PCollection<KV<String, ImageRequest>> requests = p
                 .apply(Create.of(urls))
@@ -87,7 +84,5 @@ public class HttpResponseRequest {
                                 );
                     }
                 }));
-
-        p.run().waitUntilFinish();
     }
 }

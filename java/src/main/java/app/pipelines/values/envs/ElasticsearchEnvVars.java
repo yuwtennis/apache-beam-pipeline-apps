@@ -1,7 +1,7 @@
 package app.pipelines.values.envs;
 
-import avro.shaded.com.google.common.collect.ImmutableList;
 import com.google.auto.value.AutoValue;
+import com.google.common.collect.ImmutableList;
 
 import java.util.Map;
 

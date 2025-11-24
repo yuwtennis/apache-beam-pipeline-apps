@@ -6,19 +6,19 @@ import app.pipelines.values.envs.ElasticsearchEnvVars;
 import app.pipelines.values.envs.EnvVars;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.elasticsearch.ElasticsearchIO;
-import org.apache.beam.sdk.options.PipelineOptions;
-import org.apache.beam.sdk.options.PipelineOptionsFactory;
 import org.apache.beam.sdk.transforms.MapElements;
 import org.apache.beam.sdk.values.PCollection;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
-public class ElasticsearchIOSimpleRead {
+public class ElasticsearchIOSimpleRead implements Examples {
 
     final Logger logger = LoggerFactory.getLogger(
             ElasticsearchIOSimpleRead.class) ;
 
-    public static void build(Pipeline p) {
+    public ElasticsearchIOSimpleRead() {}
+
+    public void build(Pipeline p) {
         String query = "{\"query\": {\"match_all\": {}}}" ;
         Boolean enableMetadata = true ;
 
@@ -44,13 +44,6 @@ public class ElasticsearchIOSimpleRead {
                 con) ;
 
         pCol.apply(MapElements.via(new PrintFn())) ;
-    }
-
-    public static void main(String[] args)  {
-        PipelineOptions options = PipelineOptionsFactory.fromArgs(args).withValidation().create();
-        Pipeline pipeline = Pipeline.create(options) ;
-        build(pipeline) ;
-        pipeline.run().waitUntilFinish() ;
     }
 
 }
