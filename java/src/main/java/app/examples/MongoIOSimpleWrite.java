@@ -18,7 +18,7 @@ import org.bson.Document;
 
 import static app.pipelines.connectors.MongoIORepository.Write;
 
-public class MongoIOSimpleWrite {
+public class MongoIOSimpleWrite implements Examples {
 
     final Logger logger = LoggerFactory.getLogger(
             MongoIOSimpleWrite.class) ;
@@ -27,7 +27,7 @@ public class MongoIOSimpleWrite {
      *
      * @param p Pipeline instance
      */
-    public static void build(org.apache.beam.sdk.Pipeline p) {
+    public void build(Pipeline p) {
         EnvVars<MongoDbEnvVars.MongoDb> envVars = new MongoDbEnvVars();
         MongoDbEnvVars.MongoDb mongoDbVars = envVars.loadEnv();
 
@@ -52,12 +52,4 @@ public class MongoIOSimpleWrite {
                 mongoDbVars.dbName(),
                 mongoDbVars.collectionName());
     }
-
-    public static void main(String[] args)  {
-        PipelineOptions options = PipelineOptionsFactory.create();
-        Pipeline pipeline = Pipeline.create(options) ;
-        build(pipeline) ;
-        pipeline.run().waitUntilFinish() ;
-    }
-
 }

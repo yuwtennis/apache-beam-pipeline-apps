@@ -1,11 +1,18 @@
 package app.pipelines.values.envs;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 // Test based on AutoValue usage
 // See https://github.com/google/auto/blob/main/value/userguide/index.md#usage
 public class ElasticsearchEnvVarsTest {
+    @BeforeAll
+    static void beforeAll() {
+
+
+    }
+
     @Test
     public void loadEnvValuesTest() {
         EnvVars<ElasticsearchEnvVars.Elasticsearch> envVars = new ElasticsearchEnvVars();

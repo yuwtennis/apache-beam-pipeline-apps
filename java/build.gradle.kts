@@ -23,6 +23,19 @@ dependencies {
 
     // This dependency is used by the application.
     implementation(libs.guava)
+    implementation(platform(libs.beam.sdks.java.google.cloud.platform.bom))
+    implementation(libs.jackson.annotations)
+    implementation(libs.jackson.databind)
+    implementation(libs.log4j.slf4j.impl)
+    implementation(libs.mongodb.driver.sync)
+    compileOnly(libs.auto.value.annotations)
+    annotationProcessor(libs.auto.value)
+    implementation("org.apache.beam:beam-sdks-java-core")
+    implementation("org.apache.beam:beam-runners-direct-java")
+    implementation("org.apache.beam:beam-runners-google-cloud-dataflow-java")
+    implementation("org.apache.beam:beam-sdks-java-io-elasticsearch")
+    implementation("org.apache.beam:beam-sdks-java-io-mongodb")
+    implementation("org.apache.beam:beam-sdks-java-io-rrio")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -34,10 +47,30 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = "org.example.App"
+    mainClass = "app.App"
 }
 
 tasks.named<Test>("test") {
+    doFirst {
+        val envs: Map<String, String> = mapOf(
+            "ES_HOSTS" to "192.168.1.1:9200,192.168.1.2:9200",
+            "ES_INDEX" to "my_index",
+            "ES_TYPE" to "_doc",
+            "ES_USERNAME" to "my_username",
+            "ES_PASSWORD" to "my_password",
+            "ES_TRUST_SELF_SIGNED_CERTS" to "true",
+            "ES_KEY_STORE_PATH" to "abc",
+            "ES_KEY_STORE_PASSWORD" to "abc",
+            "MONGO_HOST" to "192.168.1.1",
+            "MONGO_DB" to "my_db",
+            "MONGO_COLLECTION" to "my_collection",
+            "MONGO_USERNAME" to "my_username",
+            "MONGO_PASSWORD" to "my_password",
+            "SOME_KEY" to "some_key"
+        )
+
+        environment(envs)
+    }
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }

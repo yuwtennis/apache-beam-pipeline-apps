@@ -7,8 +7,6 @@ import app.pipelines.values.envs.EnvVars;
 import app.pipelines.values.envs.MongoDbEnvVars;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.coders.StringUtf8Coder;
-import org.apache.beam.sdk.options.PipelineOptions;
-import org.apache.beam.sdk.options.PipelineOptionsFactory;
 import org.apache.beam.sdk.transforms.Create;
 import org.apache.beam.sdk.transforms.MapElements;
 import org.apache.beam.sdk.values.PCollection;
@@ -20,7 +18,7 @@ import org.bson.Document;
 
 import static app.pipelines.connectors.MongoIORepository.Read;
 
-public class MongoIOSimpleRead {
+public class MongoIOSimpleRead implements Examples {
 
     final Logger logger = LoggerFactory.getLogger(
             MongoIOSimpleRead.class) ;
@@ -29,7 +27,7 @@ public class MongoIOSimpleRead {
      *
      * @param p Pipeline instance
      */
-    public static void build(org.apache.beam.sdk.Pipeline p) {
+    public void build(Pipeline p) {
         EnvVars<MongoDbEnvVars.MongoDb> envVars = new MongoDbEnvVars();
         MongoDbEnvVars.MongoDb mongoDbVars = envVars.loadEnv();
 
@@ -59,12 +57,4 @@ public class MongoIOSimpleRead {
                         .via((SimpleMongoDocument entity) -> entity.sentence)
         ).apply(MapElements.via(new PrintFn()));
     }
-
-    public static void main(String[] args)  {
-        PipelineOptions options = PipelineOptionsFactory.create();
-        Pipeline pipeline = Pipeline.create(options) ;
-        build(pipeline) ;
-        pipeline.run().waitUntilFinish() ;
-    }
-
 }
