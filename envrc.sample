@@ -1,5 +1,8 @@
 # For java
 
+## Common
+# export EXAMPLE_CLASS = "ElasticsearchIOSimpleread"
+
 ## MongoDb settings
 
 ###

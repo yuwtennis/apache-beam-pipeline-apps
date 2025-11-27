@@ -22,53 +22,34 @@ Not just for personal studying, but also would like to help people with pipeline
 ### Java
 
 See [examples](java/src/main/java/app/examples).
+_Example Class Name_ will be used to set environment variable _EXAMPLE_CLASS_ .
 
-| Pipeline Name                     | Description                                       | State |
-|-----------------------------------|---------------------------------------------------| ----- |
-| MongoIOSimpleReadService          | Simply read from mongodb                          | Done |
-| MongoIOSimpleWriteService         | Simply write to mongodb                           | Done |
-| MongoIOSimpleQueryService         | Simply read from mongodb using custom query       | Done |
-| ElasticsearchIOSimpleReadService  | Simply read from elasticsearch using custom query | Done |
-| ElasticsearchIOSimpleWriteService | Simply write to elasticsearch.                    | Done |
-
-### Python
-
-tbc
-
-## Tutorial
-
-See [TUTORIAL.md](TUTORIAL.md).
+| Example Class Name                | Description                                       | State |
+|-----------------------------------|---------------------------------------------------|-------|
+| MongoIOSimpleReadService          | Simply read from mongodb                          | Done  |
+| MongoIOSimpleWriteService         | Simply write to mongodb                           | Done  |
+| MongoIOSimpleQueryService         | Simply read from mongodb using custom query       | Done  |
+| ElasticsearchIOSimpleReadService  | Simply read from elasticsearch using custom query | Done  |
+| ElasticsearchIOSimpleWriteService | Simply write to elasticsearch.                    | Done  |
 
 ## How to
 
+### Python
+
+See [README](python/README.md)
+
 ### Java
 
-#### Test
+Also refer to [TUTORIAL](TUTORIAL.md) for more information.
 
-This is a instruction for running test locally. Tests are also ran in Github Action.
-
-```shell
-cd java/
-./gradlew test
-```
-
-#### Build
+#### Set environment variables
 
 ```shell
-cd java/
-./gradlew shadowJar
+source ../envrc.sample
 ```
 
 #### Run
+
 ```shell
-cd java
-
-# Set environment variables accordingly
-source ../envrc.sample
-
-# Run JAR file
-java -cp build/libs/java-1.0-SNAPSHOT-all.jar app.examples.APPNAME
-
-e.g
-java -cp build/libs/java-1.0-SNAPSHOT-all.jar app.examples.ElasticsearchIOSimpleRead
+./gradlew run
 ```
