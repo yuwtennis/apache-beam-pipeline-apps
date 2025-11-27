@@ -32,17 +32,15 @@ _Example Class Name_ will be used to set environment variable _EXAMPLE_CLASS_ .
 | ElasticsearchIOSimpleReadService  | Simply read from elasticsearch using custom query | Done  |
 | ElasticsearchIOSimpleWriteService | Simply write to elasticsearch.                    | Done  |
 
-### Python
-
-tbc
-
-## Tutorial
-
-See [TUTORIAL.md](TUTORIAL.md).
-
 ## How to
 
+### Python
+
+See [README](python/README.md)
+
 ### Java
+
+Also refer to [TUTORIAL](TUTORIAL.md) for more information.
 
 #### Set environment variables
 

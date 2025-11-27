@@ -76,22 +76,23 @@ Notes: See [Issue 20979](https://github.com/apache/beam/issues/20979#issuecommen
 
 ## KafkaReadWrite
 
+```shell
+export EXAMPLE_CLASS='KafkaReadWrite'
+```
+
 ### DirectRunner
 
 ```shell
-export EXAMPLE_CLASS='KafkaReadWrite'
-
 poetry run python3 python/__main__.py \
     --streaming \
     --runner=DirectRunner 
-
 ```
 
-### PortableRunner
+### PortableRunner w/ Flink
+
+Make sure you start your env for [PortableRunner w/ Flink](#portable-runner-w-flink).
 
 ```shell
-export EXAMPLE_CLASS='KafkaReadWrite'
-
 poetry run python3 python/__main__.py \
     --streaming \
     --runner=PortableRunner \
