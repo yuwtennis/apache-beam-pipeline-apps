@@ -1,0 +1,91 @@
+services:
+  # Custom worker
+  # https://beam.apache.org/documentation/runtime/sdk-harness-config/
+  worker-python:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+      tags:
+        - apache_beam/beam_python3.11_2.69.0_custom
+    container_name: 'sdk-harness-python'
+    network_mode: host
+    volumes:
+      - /tmp:/tmp
+    command:
+      - '--worker_pool'
+  # X-lang (duplicate with flink-job-server)
+  expansion-server:
+    image: 'apache/beam_java_expansion_service:2.69.0'
+    container_name: 'expansion-server'
+    network_mode: host
+    command:
+      - '-id'
+      - 'java-expansion-service'
+      - '-port'
+      - '8097'
+  # Kafka
+  # https://github.com/apache/kafka/blob/3.9.1/docker/examples/docker-compose-files/single-node/plaintext/docker-compose.yml
+  kafka-broker:
+    image: 'apache/kafka-native:3.9.1'
+    container_name: 'kafka-broker'
+    network_mode: host
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT_HOST://localhost:9092,PLAINTEXT://localhost:19092'
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@localhost:29093'
+      KAFKA_LISTENERS: 'CONTROLLER://:29093,PLAINTEXT_HOST://:9092,PLAINTEXT://:19092'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      CLUSTER_ID: '4L6g3nShT-eMCtK--X86sw'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+  # Flink Job server
+  flink-job-server:
+    image: apache/beam_flink1.19_job_server:2.69.0
+    container_name: 'flink-job-server'
+    command:
+      - '--flink-master'
+      - 'localhost:8081'
+    network_mode: host
+    volumes:
+      - /tmp:/tmp
+    depends_on:
+      - jobmanager
+      - taskmanager
+  # Flink Session mode
+  # https://nightlies.apache.org/flink/flink-docs-master/docs/deployment/resource-providers/standalone/docker/#session-mode-1
+  jobmanager:
+    image: flink:1.19-java11
+    container_name: 'jobmanager'
+    command: 'jobmanager'
+    network_mode: host
+    volumes:
+      - /tmp:/tmp
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: localhost
+        env.log.level: TRACE
+  taskmanager:
+    image: flink:1.19-java11
+    container_name: 'taskmanager'
+    command: 'taskmanager'
+    network_mode: host
+    volumes:
+      - /tmp:/tmp
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: localhost
+        taskmanager.numberOfTaskSlots: 2
+        env.log.level: TRACE
+    depends_on:
+      - jobmanager
+
+networks:
+  test:

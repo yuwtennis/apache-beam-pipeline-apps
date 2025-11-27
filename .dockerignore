@@ -1,0 +1,17 @@
+.github/
+.gradle/
+.idea/
+dist/
+gradle/
+java/
+scripts/
+.gitattributes
+.gitignore
+compose.yml
+Dockerfile.python
+envrc.sample
+gradle.properties
+gradlew
+gradlew.bat
+settings.gradle.kts
+TUTORIAL.md

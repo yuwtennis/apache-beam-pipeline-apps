@@ -1,5 +1,5 @@
 [project]
-name = "python"
+name = "apache-beam-pipeline-apps"
 version = "0.1.0"
 description = ""
 authors = [
@@ -8,11 +8,16 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "apache-beam (>=2.69.0,<2.70.0)"
+    "apache-beam (>=2.69.0,<2.70.0)",
+    "pydantic (>=2.12.4,<2.13.0)",
+    "pandas (>=2.0,<3.0)"
 ]
 
 [tool.poetry]
-package-mode = false
+package-mode = true
+packages = [
+    { include = "apps", from = "python" },
+]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
