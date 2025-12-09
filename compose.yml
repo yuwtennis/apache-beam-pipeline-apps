@@ -54,9 +54,6 @@ services:
     network_mode: host
     volumes:
       - /tmp:/tmp
-    depends_on:
-      - jobmanager
-      - taskmanager
   # Flink Session mode
   # https://nightlies.apache.org/flink/flink-docs-master/docs/deployment/resource-providers/standalone/docker/#session-mode-1
   jobmanager:
