@@ -48,10 +48,32 @@ docker compose up -d
 
 ### Kubernetes
 
-Repository provides helm chart for setting up deployments , etc.
+Repository provides helm chart for setting up deployments , etc.  
+Below is a setup using [minikube](https://minikube.sigs.k8s.io/).
 
 ```shell
-helm xxx
+minikube config set driver docker
+minikube start \
+  --container-runtime=containerd \
+  --memory 8192
+helm repo add jetstack https://charts.jetstack.io --force-update
+helm install \
+  cert-manager jetstack/cert-manager \
+  --namespace cert-manager \
+  --create-namespace \
+  --version v1.16.5 \
+  --set crds.enabled=true
+  
+helm install \
+  -f charts/components/strimzi-values.yaml \
+  --namespace beam \
+  --create-namespace \
+  components ./charts/components/
+```
+
+Termination.
+```shell
+helm uninstall --namespace beam components
 ```
 
 ## How tos

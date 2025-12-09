@@ -1,0 +1,19 @@
+apiVersion: flink.apache.org/v1beta1
+kind: FlinkDeployment
+metadata:
+  name: flink-session-cluster
+spec:
+  image: {{ .Values.flinkImage }}
+  flinkVersion: {{ .Values.flinkVersion }}
+  flinkConfiguration:
+    taskmanager.numberOfTaskSlots: 1
+    taskmanager.memory.task.off-heap.size: "512m"
+  serviceAccount: flink
+  jobManager:
+    resource:
+      memory: {{ .Values.flinkJobManager.memory }}
+      cpu: {{ .Values.flinkJobManager.cpu }}
+  taskManager:
+    resource:
+      memory: {{ .Values.flinkTaskmanager.memory }}
+      cpu: {{ .Values.flinkTaskmanager.cpu }}
