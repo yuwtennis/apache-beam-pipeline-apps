@@ -1,11 +1,38 @@
+## Available apps
+
+See [examples](src/main/java/app/examples).
+_Example Class Name_ will be used to set environment variable _EXAMPLE_CLASS_ .
+
+| Example Class Name                | Description                                       | State |
+|-----------------------------------|---------------------------------------------------|-------|
+| MongoIOSimpleReadService          | Simply read from mongodb                          | Done  |
+| MongoIOSimpleWriteService         | Simply write to mongodb                           | Done  |
+| MongoIOSimpleQueryService         | Simply read from mongodb using custom query       | Done  |
+| ElasticsearchIOSimpleReadService  | Simply read from elasticsearch using custom query | Done  |
+| ElasticsearchIOSimpleWriteService | Simply write to elasticsearch.                    | Done  |
+
+## Set environment variables
+
+```shell
+source ../envrc.sample
+```
+
+## Run
+
+```shell
+./gradlew run
+```
+
+## Tips
+
 Tips for running app.
 
 * TLS
-  * [Creating self-signed certificate for elasticsearch](#creating-self-signed-certificate-for-elasticsearch)
-  * [Extracting CA crt and key from ECK secrets](#extracting-ca-cert-and-key-from-eck-secrets)
-  * [Indexing documents to eck using dataflow runner](#indexing-documents-to-eck-using-dataflow-runner)
+    * [Creating self-signed certificate for elasticsearch](#creating-self-signed-certificate-for-elasticsearch)
+    * [Extracting CA crt and key from ECK secrets](#extracting-ca-cert-and-key-from-eck-secrets)
+    * [Indexing documents to eck using dataflow runner](#indexing-documents-to-eck-using-dataflow-runner)
 
-## Creating self-signed certificate for elasticsearch 
+### Creating self-signed certificate for elasticsearch
 
 1. Change directory to ES_HOME
 
@@ -16,7 +43,7 @@ mkdir config/certs/
 ```
 
 3. Create PKCS#12 keystore for storing CA key and cert. Follow online [doc](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/security-basic-setup.html#generate-certificates).  
-This file will be used as keystore for _ElasticsearchIO_ in apache beam .
+   This file will be used as keystore for _ElasticsearchIO_ in apache beam .
 
 ```shell
 $ ./bin/elasticsearch-certutil ca
@@ -74,7 +101,7 @@ cp elasticsearch/http.p12 config/certs/
 c.Configure _elasticsearch.yml_ and add password to elasticsearch keystore accordingly.
 
 
-## Extracting CA cert and key from ECK secrets
+### Extracting CA cert and key from ECK secrets
 
 This section will extract CA key and cert and combine them as PKCS#12 keystore.
 
@@ -95,7 +122,7 @@ kubectl get secrets es-es-http-ca-internal -n $KUBE_NS -o jsonpath='{.data.tls\.
 openssl pkcs12 -export -in ca.crt -inkey ca.key -out ca.p12 -name "Elastic CA certificate"
 ```
 
-## Indexing documents to ECK using dataflow runner
+### Indexing documents to ECK using dataflow runner
 
 This section will outline how to index documents to TLS protected elasticsearch running on ECK.  
 You will need to stage keystore including CA key and certificate inside dataflow _workers_.
@@ -109,7 +136,7 @@ I will use _custom container_ for simplicity.
 
 1. Prepare keystore following instruction in [previous section](#extracting-ca-cert-and-key-from-eck-secrets).
 
-2. Build custom container and push to container registry. See [Dockerfile](java/Dockerfile) for example.
+2. Build custom container and push to container registry. See [Dockerfile](../Dockerfile) for example.
 
 3. Run pipeline. `--experiments=use_runner_v2` and `--sdkContainerImage` option will be required.
 

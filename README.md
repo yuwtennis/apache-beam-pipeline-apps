@@ -3,11 +3,13 @@
 * [Available apps](#available-apps)
   * [Java](#java)
   * [Python](#python)
-* [Tutorial](#tutorial)
+* [Platform environment](#platform-environment)
+  * [Binaries](#binaries)
+  * [Docker](#docker)
+  * [Kubernetes](#kubernetes)
 * [How to](#how-to)
-  * [Test](#test)
-  * [Build](#build)
-  * [Run](#run)
+  * [Java](#java-1)
+  * [Python](#py)
 
 ## Target audience
 
@@ -17,22 +19,42 @@ People who use apache beam.
 
 Not just for personal studying, but also would like to help people with pipeline implementation.
 
-## Available apps
+## Platform environment
 
-### Java
+Repository provides support to set up the environment.  
+If you not to choose your own setup feel free to use it.
 
-See [examples](java/src/main/java/app/examples).
-_Example Class Name_ will be used to set environment variable _EXAMPLE_CLASS_ .
+### Binaries
 
-| Example Class Name                | Description                                       | State |
-|-----------------------------------|---------------------------------------------------|-------|
-| MongoIOSimpleReadService          | Simply read from mongodb                          | Done  |
-| MongoIOSimpleWriteService         | Simply write to mongodb                           | Done  |
-| MongoIOSimpleQueryService         | Simply read from mongodb using custom query       | Done  |
-| ElasticsearchIOSimpleReadService  | Simply read from elasticsearch using custom query | Done  |
-| ElasticsearchIOSimpleWriteService | Simply write to elasticsearch.                    | Done  |
+Run script to download the binaries.
 
-## How to
+Downloading Apache Flink.
+
+```shell
+bash scripts/download-app.sh -t flink -a APP_VERSION -s SCALA_VERSION
+```
+
+Downloading Apache Spark.
+
+TBC
+
+### Docker
+
+Use [docker compose](compose.yml) when setting up docker environment.
+
+```shell
+docker compose up -d
+```
+
+### Kubernetes
+
+Repository provides helm chart for setting up deployments , etc.
+
+```shell
+helm xxx
+```
+
+## How tos
 
 ### Python
 
@@ -40,16 +62,6 @@ See [README](python/README.md)
 
 ### Java
 
-Also refer to [TUTORIAL](TUTORIAL.md) for more information.
+See [README](java/README.md)
 
-#### Set environment variables
 
-```shell
-source ../envrc.sample
-```
-
-#### Run
-
-```shell
-./gradlew run
-```

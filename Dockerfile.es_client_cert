@@ -1,3 +1,6 @@
+# syntax=docker/dockerfile:1
+
+# Example image including client certificate in a image when using dataflow
 # Use image built by apache beam project
 FROM apache/beam_java11_sdk:2.42.0
 
