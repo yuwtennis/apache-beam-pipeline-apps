@@ -1,4 +1,15 @@
 services:
+  rdb:
+    image: postgres:18-trixie
+    restart: no
+    container_name: 'rdb'
+    network_mode: host
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - rdb-data:/var/lib/postgresql
   # Custom worker
   # https://beam.apache.org/documentation/runtime/sdk-harness-config/
   worker-python:
@@ -86,3 +97,6 @@ services:
 
 networks:
   test:
+
+volumes:
+  rdb-data:

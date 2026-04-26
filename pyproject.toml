@@ -10,7 +10,9 @@ requires-python = ">=3.11"
 dependencies = [
     "apache-beam (>=2.69.0,<2.70.0)",
     "pydantic (>=2.12.4,<2.13.0)",
-    "pandas (>=2.0,<3.0)"
+    "pandas (>=2.0,<3.0)",
+    "sqlalchemy (>=2.0,<3.0)",
+    "psycopg[binary] (>=3.0,<4.0)"
 ]
 
 [tool.poetry]
