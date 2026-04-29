@@ -12,7 +12,7 @@ dependencies = [
     "pydantic (>=2.12.4,<2.13.0)",
     "pandas (>=2.0,<3.0)",
     "sqlalchemy (>=2.0,<3.0)",
-    "psycopg[binary] (>=3.0,<4.0)"
+    "psycopg[binary] (>=3.0,<4.0)",
 ]
 
 [tool.poetry]
@@ -24,3 +24,8 @@ packages = [
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "pytest (>=9.0,<10.0)"
+]
