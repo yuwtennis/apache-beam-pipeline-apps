@@ -8,6 +8,7 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+    checkstyle
 }
 
 repositories {
@@ -49,6 +50,11 @@ java {
 application {
     // Define the main class for the application.
     mainClass = "app.App"
+}
+
+checkstyle {
+    toolVersion ="13.4.0"
+    configFile = rootProject.file("java/config/checkstyle/checkstyle.xml")
 }
 
 tasks.named<Test>("test") {
