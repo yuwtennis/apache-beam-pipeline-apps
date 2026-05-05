@@ -55,6 +55,9 @@ application {
 checkstyle {
     toolVersion ="13.4.0"
     configFile = rootProject.file("java/config/checkstyle/checkstyle.xml")
+    configProperties = mapOf(
+        "org.checkstyle.google.severity" to "error"
+    )
 }
 
 tasks.named<Test>("test") {
