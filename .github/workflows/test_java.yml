@@ -16,11 +16,7 @@ jobs:
         with:
           distribution: 'corretto'
           java-version: '21'
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v6
-        with:
-          gradle-version: 9.2.0
-          cache-provider: basic
+          cache: 'gradle'
       - name: Execute Gradle test
         run: ./gradlew test
       - name: Checkstyle
