@@ -2,6 +2,6 @@ version: 2
 updates:
   # Enable version updates for gradle
   - package-ecosystem: "gradle"
-    directory: "/java"
+    directory: "/"
     schedule:
       interval: "monthly"
