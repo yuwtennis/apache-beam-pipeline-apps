@@ -9,7 +9,7 @@ jackson-annotations = "2.19.4"
 jackson-databind = "2.19.4"
 slf4j-simple = "2.0.17"
 slf4j-api = "2.0.17"
-mongodb-driver-sync = "4.6.0"
+mongodb-driver-sync = "5.7.0"
 auto-value = "1.11.0"
 
 [libraries]
