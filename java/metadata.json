@@ -1,0 +1,11 @@
+{
+  "name": "java-apps-flex-template",
+  "description": "Example flex template for Java",
+  "parameters": [
+    {
+      "name": "exampleClass",
+      "label": "Example Class to run",
+      "helpText": "Example class to run"
+    }
+  ]
+}

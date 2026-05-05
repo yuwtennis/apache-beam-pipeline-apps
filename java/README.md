@@ -3,24 +3,60 @@
 See [examples](src/main/java/app/examples).
 _Example Class Name_ will be used to set environment variable _EXAMPLE_CLASS_ .
 
-| Example Class Name                | Description                                       | State |
-|-----------------------------------|---------------------------------------------------|-------|
-| MongoIOSimpleReadService          | Simply read from mongodb                          | Done  |
-| MongoIOSimpleWriteService         | Simply write to mongodb                           | Done  |
-| MongoIOSimpleQueryService         | Simply read from mongodb using custom query       | Done  |
-| ElasticsearchIOSimpleReadService  | Simply read from elasticsearch using custom query | Done  |
-| ElasticsearchIOSimpleWriteService | Simply write to elasticsearch.                    | Done  |
-
-## Set environment variables
-
-```shell
-source ../envrc.sample
-```
+| Example Class Name                             | Description                                       | State |
+|------------------------------------------------|---------------------------------------------------|-------|
+| app.examples.HelloWorld                        | Hello world                                       | Done  |
+| app.examples.MongoIOSimpleReadService          | Simply read from mongodb                          | Done  |
+| app.examples.MongoIOSimpleWriteService         | Simply write to mongodb                           | Done  |
+| app.examples.MongoIOSimpleQueryService         | Simply read from mongodb using custom query       | Done  |
+| app.examples.ElasticsearchIOSimpleReadService  | Simply read from elasticsearch using custom query | Done  |
+| app.examples.ElasticsearchIOSimpleWriteService | Simply write to elasticsearch.                    | Done  |
 
 ## Run
 
+### Set environment variables
+
+```shell
+export EXAMPLE_CLASS=app.examples.HelloWorld
+```
+
+### Run
+
 ```shell
 ./gradlew run
+```
+
+if environment variable _EXAMPLE_CLASS_ is not set,  
+then you can pass it as an argument.
+
+```shell
+./gradlew run --arg='--exampleClass="app.examples.HelloWorld"'
+
+## Create a dataflow flex template
+
+### Build
+
+Replace LOCATION, REGISTRY_NAME, BUCKET_NAME, PATH_TO_TEMPLATE_SPEC with your values.
+
+```shell
+gcloud dataflow flex-template build gs://BUCKET_NAME/PATH_TO_TEMPLATE_SPEC/java-apps-flex-template.json \
+ --image-gcr-path "LOCATION-docker.pkg.dev/elite-caster-125113/REGISTRY_NAME/java-apps-flex-template:latest" \
+ --sdk-language "JAVA" \
+ --flex-template-base-image JAVA21 \
+ --metadata-file "java/metadata.json" \
+ --jar "java/build/libs/java.jar" \
+ --env FLEX_TEMPLATE_JAVA_MAIN_CLASS="app.App"
+```
+
+### Run
+
+Replace BUCKET_NAME, PATH_TO_TEMPLATE_SPEC with your values.
+
+```shell
+gcloud dataflow flex-template run "java-apps-flex-template-`date +%Y%m%d-%H%M%S`" \
+ --template-file-gcs-location "gs://BUCKET_NAME/PATH_TO_TEMPLATE_SPEC/java-apps-flex-template.json" \
+ --parameters exampleClass="app.examples.HelloWorld" \
+ --region "asia-northeast1"
 ```
 
 ## Tips
