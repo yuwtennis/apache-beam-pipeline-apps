@@ -8,6 +8,7 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+    checkstyle
 }
 
 repositories {
@@ -26,7 +27,8 @@ dependencies {
     implementation(platform(libs.beam.sdks.java.google.cloud.platform.bom))
     implementation(libs.jackson.annotations)
     implementation(libs.jackson.databind)
-    implementation(libs.log4j.slf4j.impl)
+    implementation(libs.slf4j.simple)
+    implementation(libs.slf4j.api)
     implementation(libs.mongodb.driver.sync)
     compileOnly(libs.auto.value.annotations)
     annotationProcessor(libs.auto.value)
@@ -48,6 +50,14 @@ java {
 application {
     // Define the main class for the application.
     mainClass = "app.App"
+}
+
+checkstyle {
+    toolVersion ="13.4.0"
+    configFile = rootProject.file("java/config/checkstyle/checkstyle.xml")
+    configProperties = mapOf(
+        "org.checkstyle.google.severity" to "error"
+    )
 }
 
 tasks.named<Test>("test") {

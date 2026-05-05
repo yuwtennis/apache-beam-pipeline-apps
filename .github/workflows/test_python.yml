@@ -1,0 +1,13 @@
+name: Python CI
+
+on:
+  push:
+    branches-ignore:
+      - main
+
+# TODO pylint and pytest
+jobs:
+  unittest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
