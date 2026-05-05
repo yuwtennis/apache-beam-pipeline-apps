@@ -4,7 +4,7 @@
 [versions]
 guava = "33.4.6-jre"
 junit-jupiter = "5.12.1"
-beam-sdks-java-google-cloud-platform-bom = "2.69.0"
+beam-sdks-java-google-cloud-platform-bom = "2.73.0"
 jackson-annotations = "2.19.4"
 jackson-databind = "2.19.4"
 slf4j-simple = "2.0.17"
